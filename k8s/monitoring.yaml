@@ -203,7 +203,7 @@ spec:
       serviceAccountName: prometheus
       containers:
         - name: prometheus
-          image: prom/prometheus:latest
+          image: registry.cn-hangzhou.aliyuncs.com/seam/prometheus:v3.5.0
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -279,7 +279,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana:latest
+          image: registry.cn-hangzhou.aliyuncs.com/seam/grafana:12.0.2
           ports:
             - containerPort: 3000
           env:
@@ -634,30 +634,30 @@ data:
       }
     }
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: humor-game-backend
-  namespace: monitoring
-spec:
-  selector:
-    matchLabels:
-      app: backend
-  endpoints:
-    - port: "3001"
-      path: /metrics
-      interval: 15s
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: humor-game-frontend
-  namespace: monitoring
-spec:
-  selector:
-    matchLabels:
-      app: frontend
-  endpoints:
-    - port: "80"
-      path: /metrics
-      interval: 15s
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: humor-game-backend
+#   namespace: monitoring
+# spec:
+#   selector:
+#     matchLabels:
+#       app: backend
+#   endpoints:
+#     - port: "3001"
+#       path: /metrics
+#       interval: 15s
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: humor-game-frontend
+#   namespace: monitoring
+# spec:
+#   selector:
+#     matchLabels:
+#       app: frontend
+#   endpoints:
+#     - port: "80"
+#       path: /metrics
+#       interval: 15s

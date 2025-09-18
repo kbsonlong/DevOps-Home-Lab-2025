@@ -22,18 +22,15 @@ help: ## Show this help message
 ##@ 🚀 Deployment Commands
 
 setup-cluster: ## Create and configure k3d cluster
-	@echo "🚀 Creating k3d cluster..."
-	k3d cluster create dev-cluster --port "8080:80@loadbalancer" --port "8090:443@loadbalancer" || true
+	@echo "🚀 Creating kind cluster..."
+	kind create cluster --config kind-config.yaml || true
 	@echo "⏳ Waiting for cluster to be ready..."
 	kubectl wait --for=condition=Ready nodes --all --timeout=60s
 	@echo "✅ Cluster ready!"
 
 install-ingress: ## Install NGINX Ingress Controller
 	@echo "🌐 Installing NGINX Ingress Controller..."
-	helm upgrade --install ingress-nginx ingress-nginx \
-		--repo https://kubernetes.github.io/ingress-nginx \
-		--namespace ingress-nginx --create-namespace \
-		--wait --timeout=300s
+	kubectl apply -f deploy-ingress-nginx.yaml
 	@echo "✅ Ingress controller installed!"
 
 deploy-app: ## Deploy the main application (postgres, redis, backend, frontend)
@@ -60,7 +57,7 @@ deploy-monitoring: ## Deploy Prometheus and Grafana monitoring stack
 deploy-gitops: ## Deploy ArgoCD GitOps platform
 	@echo "🔄 Deploying ArgoCD..."
 	kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+	kubectl apply -n argocd -f argocd.yaml 
 	@echo "⏳ Waiting for ArgoCD to be ready..."
 	kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
 	kubectl apply -f gitops-safe/argocd-project.yaml

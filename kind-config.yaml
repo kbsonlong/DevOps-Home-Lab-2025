@@ -1,0 +1,17 @@
+kind: Cluster
+apiVersion: "kind.x-k8s.io/v1alpha4"
+networking:
+  podSubnet: "10.10.0.0/16"
+  serviceSubnet: "10.11.0.0/16"
+nodes:
+  - role: control-plane
+    image: registry.cn-hangzhou.aliyuncs.com/seam/node:v1.29.0
+    extraPortMappings:
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+  - role: worker
+    image: registry.cn-hangzhou.aliyuncs.com/seam/node:v1.29.0

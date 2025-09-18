@@ -35,17 +35,17 @@ sudo mv cloudflared /usr/local/bin/
 cloudflared tunnel login
 
 # This will open your browser to authenticate
-# Select your domain (e.g., gameapp.games)
+# Select your domain (e.g., kbsonlong.com)
 # Download the certificate file to ~/.cloudflared/
 ```
 
 ### Step 3: Create a New Tunnel
 ```bash
 # Create tunnel
-cloudflared tunnel create gameapp-tunnel
+cloudflared tunnel create home-lab
 
 # This will output:
-# Tunnel gameapp-tunnel created with ID: [TUNNEL_ID]
+# Tunnel home-lab created with ID: [TUNNEL_ID]
 # Save the ID for later use
 ```
 
@@ -58,7 +58,7 @@ credentials-file: ~/.cloudflared/[TUNNEL_ID].json
 
 ingress:
   # Main application
-  - hostname: app.gameapp.games
+  - hostname: app.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
       originServerName: gameapp.local
@@ -66,22 +66,22 @@ ingress:
       disableChunkedEncoding: true
 
   # Main domain
-  - hostname: gameapp.games
+  - hostname: kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: gameapp.games
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
   # Monitoring services
-  - hostname: grafana.gameapp.games
+  - hostname: grafana.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
       originServerName: grafana.gameapp.local
       noTLSVerify: true
       disableChunkedEncoding: true
 
-  - hostname: prometheus.gameapp.games
+  - hostname: prometheus.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
       originServerName: prometheus.gameapp.local
@@ -89,7 +89,7 @@ ingress:
       disableChunkedEncoding: true
 
   # ArgoCD
-  - hostname: argocd.gameapp.games
+  - hostname: argocd.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
       originServerName: argocd.gameapp.local
@@ -103,20 +103,20 @@ ingress:
 ### Step 5: Run the Tunnel
 ```bash
 # Start tunnel in foreground
-cloudflared tunnel run gameapp-tunnel
+cloudflared tunnel run home-lab
 
 # Or run in background
-cloudflared tunnel run gameapp-tunnel &
+cloudflared tunnel run home-lab &
 ```
 
 ### Step 6: Route Traffic to Tunnel
 ```bash
 # Route traffic for your domain to the tunnel
-cloudflared tunnel route dns gameapp-tunnel gameapp.games
-cloudflared tunnel route dns gameapp-tunnel app.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel grafana.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel prometheus.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel argocd.gameapp.games
+cloudflared tunnel route dns home-lab kbsonlong.com
+cloudflared tunnel route dns home-lab app.kbsonlong.com
+cloudflared tunnel route dns home-lab grafana.kbsonlong.com
+cloudflared tunnel route dns home-lab prometheus.kbsonlong.com
+cloudflared tunnel route dns home-lab argocd.kbsonlong.com
 ```
 
 ## Method 2: Dashboard Setup (Recommended for Production)
@@ -128,7 +128,7 @@ cloudflared tunnel route dns gameapp-tunnel argocd.gameapp.games
 
 ### Step 2: Create New Tunnel
 1. Click **"Create a tunnel"**
-2. Enter tunnel name: `gameapp-tunnel`
+2. Enter tunnel name: `home-lab`
 3. Click **"Save tunnel"**
 
 ### Step 3: Configure Tunnel
@@ -145,31 +145,31 @@ cloudflared tunnel route dns gameapp-tunnel argocd.gameapp.games
 
 #### Main Application
 - **Subdomain:** `app`
-- **Domain:** `gameapp.games`
+- **Domain:** `kbsonlong.com`
 - **Service Type:** `HTTP`
 - **Service URL:** `172.20.10.3:8080`
 
 #### Main Domain
 - **Subdomain:** `@` (root domain)
-- **Domain:** `gameapp.games`
+- **Domain:** `kbsonlong.com`
 - **Service Type:** `HTTP`
 - **Service URL:** `172.20.10.3:8080`
 
 #### Grafana
 - **Subdomain:** `grafana`
-- **Domain:** `gameapp.games`
+- **Domain:** `kbsonlong.com`
 - **Service Type:** `HTTP`
 - **Service URL:** `172.20.10.3:8080`
 
 #### Prometheus
 - **Subdomain:** `prometheus`
-- **Domain:** `gameapp.games`
+- **Domain:** `kbsonlong.com`
 - **Service Type:** `HTTP`
 - **Service URL:** `172.20.10.3:8080`
 
 #### ArgoCD
 - **Subdomain:** `argocd`
-- **Domain:** `gameapp.games`
+- **Domain:** `kbsonlong.com`
 - **Service Type:** `HTTP`
 - **Service URL:** `172.20.10.3:8080`
 
@@ -192,10 +192,10 @@ cloudflared tunnel route dns gameapp-tunnel argocd.gameapp.games
 ### Step 3: Switch Between Configs
 ```bash
 # Use local config
-cloudflared tunnel run --config ~/.cloudflared/config.yml gameapp-tunnel
+cloudflared tunnel run --config ~/.cloudflared/config.yml home-lab
 
 # Use dashboard config (default)
-cloudflared tunnel run gameapp-tunnel
+cloudflared tunnel run home-lab
 ```
 
 ## Verification and Testing
@@ -203,7 +203,7 @@ cloudflared tunnel run gameapp-tunnel
 ### Check Tunnel Status
 ```bash
 # Check tunnel info
-cloudflared tunnel info gameapp-tunnel
+cloudflared tunnel info home-lab
 
 # List all tunnels
 cloudflared tunnel list
@@ -215,14 +215,14 @@ cloudflared tunnel route dns list
 ### Test Connectivity
 ```bash
 # Test local connectivity
-curl -H "Host: gameapp.games" http://172.20.10.3:8080/
+curl -H "Host: kbsonlong.com" http://172.20.10.3:8080/
 
 # Test through tunnel
-curl -I https://gameapp.games
-curl -I https://app.gameapp.games
-curl -I https://grafana.gameapp.games
-curl -I https://prometheus.gameapp.games
-curl -I https://argocd.gameapp.games
+curl -I https://kbsonlong.com
+curl -I https://app.kbsonlong.com
+curl -I https://grafana.kbsonlong.com
+curl -I https://prometheus.kbsonlong.com
+curl -I https://argocd.kbsonlong.com
 ```
 
 ## Troubleshooting
@@ -249,10 +249,10 @@ curl -I https://argocd.gameapp.games
 ### Debug Commands
 ```bash
 # Run with debug logging
-cloudflared tunnel run --loglevel debug gameapp-tunnel
+cloudflared tunnel run --loglevel debug home-lab
 
 # Check tunnel logs
-cloudflared tunnel info gameapp-tunnel
+cloudflared tunnel info home-lab
 
 # Test specific hostname
 cloudflared tunnel --loglevel debug run --url http://172.20.10.3:8080
