@@ -28,12 +28,12 @@ kubectl wait --for=condition=ready pod -l app=grafana -n monitoring
 ## 🌐 Access URLs
 
 ### Local Development
-- **Prometheus**: http://prometheus.gameapp.local:8080
-- **Grafana**: http://grafana.gameapp.local:8080
+- **Prometheus**: http://prometheus.kbsonlong.com:8080
+- **Grafana**: http://grafana.kbsonlong.com:8080
 
 ### Production
-- **Prometheus**: http://prometheus.gameapp.games
-- **Grafana**: http://grafana.gameapp.games
+- **Prometheus**: http://prometheus.kbsonlong.com
+- **Grafana**: http://grafana.kbsonlong.com
 
 ## 🔐 Default Credentials
 
@@ -50,20 +50,20 @@ The setup script automatically detects your ingress IP and adds entries to your 
 
 ```bash
 # Local monitoring access (k3d port mapping)
-127.0.0.1 prometheus.gameapp.local
-127.0.0.1 grafana.gameapp.local
+127.0.0.1 prometheus.kbsonlong.com
+127.0.0.1 grafana.kbsonlong.com
 
 # Production monitoring access (automatically detected IP)
 # Example after script runs:
-# 172.18.0.2 prometheus.gameapp.games
-# 172.18.0.2 grafana.gameapp.games
+# 172.18.0.2 prometheus.kbsonlong.com
+# 172.18.0.2 grafana.kbsonlong.com
 ```
 
 ### 🔍 How IP Detection Works
 
 **For Local Development (k3d):**
 - Uses `127.0.0.1` (localhost) in `/etc/hosts`
-- Access via `http://prometheus.gameapp.local:8080` (k3d maps port 8080→80)
+- Access via `http://prometheus.kbsonlong.com:8080` (k3d maps port 8080→80)
 - This matches your k3d cluster configuration
 
 **For Production:**

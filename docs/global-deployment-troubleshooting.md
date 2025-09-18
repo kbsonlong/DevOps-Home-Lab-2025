@@ -123,7 +123,7 @@ ingress:
   - hostname: app.yourdomain.com
     service: http://localhost:8080
     originRequest:
-      originServerName: gameapp.local
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   

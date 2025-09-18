@@ -61,7 +61,7 @@ ingress:
   - hostname: app.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: gameapp.local
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
@@ -77,14 +77,14 @@ ingress:
   - hostname: grafana.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: grafana.gameapp.local
+      originServerName: grafana.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
   - hostname: prometheus.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: prometheus.gameapp.local
+      originServerName: prometheus.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
@@ -92,7 +92,7 @@ ingress:
   - hostname: argocd.kbsonlong.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: argocd.gameapp.local
+      originServerName: argocd.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
 

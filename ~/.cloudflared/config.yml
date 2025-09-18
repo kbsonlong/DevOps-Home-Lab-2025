@@ -1,42 +1,42 @@
 tunnel: # your cloudflare tunnel ID
 
 ingress:
-  # Route app.gameapp.games to your local k3d cluster
-  - hostname: app.gameapp.games # your domain name
+  # Route app.kbsonlong.com to your local k3d cluster
+  - hostname: app.kbsonlong.com # your domain name
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: app.gameapp.games
+      originServerName: app.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
-  # Route main domain gameapp.games
-  - hostname: gameapp.games # your domain name
+  # Route main domain kbsonlong.com
+  - hostname: kbsonlong.com # your domain name
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: gameapp.games
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
   # Route monitoring subdomains with single-level (covered by Universal SSL)
-  - hostname: grafana.gameapp.games # your domain name
+  - hostname: grafana.kbsonlong.com # your domain name
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: grafana.gameapp.games # your domain name
+      originServerName: grafana.kbsonlong.com # your domain name
       noTLSVerify: true
       disableChunkedEncoding: true
   
-  - hostname: prometheus.gameapp.games # your domain name
+  - hostname: prometheus.kbsonlong.com # your domain name
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: prometheus.gameapp.games # your domain name
+      originServerName: prometheus.kbsonlong.com # your domain name
       noTLSVerify: true
       disableChunkedEncoding: true
   
   # Route ArgoCD subdomain
-  - hostname: argocd.gameapp.games # your domain name
+  - hostname: argocd.kbsonlong.com # your domain name
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: argocd.gameapp.games # your domain name
+      originServerName: argocd.kbsonlong.com # your domain name
       noTLSVerify: true
       disableChunkedEncoding: true
   

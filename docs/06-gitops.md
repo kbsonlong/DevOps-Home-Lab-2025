@@ -594,7 +594,7 @@ You've implemented professional GitOps workflows:
 - **Resources Tracked:** 19
 
 **🎮 Important URL Differentiation:**
-- **Game Frontend:** https://gameapp.local:8080/ (Your game application)
+- **Game Frontend:** https://kbsonlong.com:8080/ (Your game application)
 - **ArgoCD UI:** http://localhost:8090/ (GitOps management interface)
 - **Prometheus:** http://localhost:9090/ (Metrics monitoring)
 - **Grafana:** http://localhost:3000/ (Dashboard visualization)

@@ -30,7 +30,7 @@ This milestone will teach you how to:
 
 ```bash
 # Test application health
-curl -H "Host: gameapp.local" -s http://localhost:8080/api/health | jq .
+curl -H "Host: kbsonlong.com" -s http://localhost:8080/api/health | jq .
 
 # Check resource usage
 kubectl top nodes
@@ -79,39 +79,39 @@ tunnel: YOUR_NEW_TUNNEL_ID
 
 ingress:
   # Main game application
-  - hostname: gameapp.games
+  - hostname: kbsonlong.com
     service: http://localhost:8080
     originRequest:
-      originServerName: gameapp.local
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
-  - hostname: app.gameapp.games
+  - hostname: app.kbsonlong.com
     service: http://localhost:8080
     originRequest:
-      originServerName: gameapp.local
+      originServerName: kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
   # Monitoring services
-  - hostname: grafana.gameapp.games
+  - hostname: grafana.kbsonlong.com
     service: http://localhost:8080
     originRequest:
-      originServerName: grafana.gameapp.local
+      originServerName: grafana.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
-  - hostname: prometheus.gameapp.games
+  - hostname: prometheus.kbsonlong.com
     service: http://localhost:8080
     originRequest:
-      originServerName: prometheus.gameapp.local
+      originServerName: prometheus.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
-  - hostname: argocd.gameapp.games
+  - hostname: argocd.kbsonlong.com
     service: http://localhost:8080
     originRequest:
-      originServerName: argocd.gameapp.local
+      originServerName: argocd.kbsonlong.com
       noTLSVerify: true
       disableChunkedEncoding: true
   
@@ -122,11 +122,11 @@ ingress:
 #### **3.4: Create DNS Routes**
 ```bash
 # Create DNS routes for all services
-cloudflared tunnel route dns gameapp-tunnel gameapp.games
-cloudflared tunnel route dns gameapp-tunnel app.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel grafana.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel prometheus.gameapp.games
-cloudflared tunnel route dns gameapp-tunnel argocd.gameapp.games
+cloudflared tunnel route dns gameapp-tunnel kbsonlong.com
+cloudflared tunnel route dns gameapp-tunnel app.kbsonlong.com
+cloudflared tunnel route dns gameapp-tunnel grafana.kbsonlong.com
+cloudflared tunnel route dns gameapp-tunnel prometheus.kbsonlong.com
+cloudflared tunnel route dns gameapp-tunnel argocd.kbsonlong.com
 ```
 
 #### **3.5: Start Tunnel**
@@ -146,7 +146,7 @@ Add production domains to `k8s/ingress.yaml`:
 ```yaml
 # Add these rules to the humor-game-ingress
     # Production domain
-    - host: gameapp.games
+    - host: kbsonlong.com
       http:
         paths:
           - path: /api
@@ -186,7 +186,7 @@ Add production domains to `k8s/ingress.yaml`:
                   number: 80
     
     # App subdomain (repeat same paths)
-    - host: app.gameapp.games
+    - host: app.kbsonlong.com
       # ... same paths as above ...
 ```
 
@@ -235,7 +235,7 @@ kubectl rollout status deployment argocd-server -n argocd --timeout=60s
 3. **Add production ArgoCD route**:
 ```yaml
 # Add to argocd-ingress in k8s/ingress.yaml
-    - host: argocd.gameapp.games
+    - host: argocd.kbsonlong.com
       http:
         paths:
           - path: /
@@ -281,21 +281,21 @@ kubectl get networkpolicy -n humor-game
 ```bash
 # Test main application
 echo "🎮 Testing Game Application:"
-curl -s https://gameapp.games/api/health | jq -r '.status + " - " + .timestamp'
+curl -s https://kbsonlong.com/api/health | jq -r '.status + " - " + .timestamp'
 
 # Test monitoring stack
 echo "📊 Testing Prometheus:"
-curl -s https://prometheus.gameapp.games/api/v1/targets | jq -r '.data.activeTargets | length | tostring + " active targets"'
+curl -s https://prometheus.kbsonlong.com/api/v1/targets | jq -r '.data.activeTargets | length | tostring + " active targets"'
 
 echo "📈 Testing Grafana:"
-curl -s https://grafana.gameapp.games/api/health | jq -r '.database + " - v" + .version'
+curl -s https://grafana.kbsonlong.com/api/health | jq -r '.database + " - v" + .version'
 
 # Test ArgoCD
 echo "🚀 Testing ArgoCD:"
-curl -s https://argocd.gameapp.games/healthz
+curl -s https://argocd.kbsonlong.com/healthz
 
 # Test app subdomain
-curl -s https://app.gameapp.games/api/health | jq .
+curl -s https://app.kbsonlong.com/api/health | jq .
 ```
 
 ## 🔧 **Comprehensive Troubleshooting Guide**
@@ -349,7 +349,7 @@ kubectl rollout restart deployment argocd-server -n argocd
 kubectl rollout status deployment argocd-server -n argocd --timeout=60s
 
 # 4. Test again
-curl -s https://argocd.gameapp.games/healthz
+curl -s https://argocd.kbsonlong.com/healthz
 ```
 
 ### **Issue 3: Monitoring Services Return 404**
@@ -381,7 +381,7 @@ kubectl apply -f k8s/monitoring-tunnel-ingress.yaml
 
 **Symptoms**:
 ```bash
-nslookup gameapp.games
+nslookup kbsonlong.com
 # Returns local IP instead of Cloudflare IPs
 ```
 
@@ -394,10 +394,10 @@ grep gameapp /etc/hosts
 **Solution**:
 ```bash
 # Remove local DNS overrides
-sudo sed -i '' '/127.0.0.1 gameapp.games/d' /etc/hosts
+sudo sed -i '' '/127.0.0.1 kbsonlong.com/d' /etc/hosts
 
 # Verify DNS now resolves to Cloudflare
-nslookup gameapp.games
+nslookup kbsonlong.com
 # Should return Cloudflare IPs (104.x.x.x or 172.x.x.x)
 ```
 
@@ -484,7 +484,7 @@ kubectl delete networkpolicy --all -n humor-game
 # Application Health Check
 kubectl get pods -n humor-game
 kubectl get hpa -n humor-game
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 
 # Tunnel Status
 ps aux | grep cloudflared
@@ -496,14 +496,14 @@ kubectl get ingress -A
 kubectl describe ingress humor-game-ingress -n humor-game
 
 # DNS Verification
-nslookup gameapp.games
-dig gameapp.games
+nslookup kbsonlong.com
+dig kbsonlong.com
 
 # Global Access Test
-curl -s https://gameapp.games/api/health
-curl -s https://prometheus.gameapp.games/api/v1/targets | jq '.data.activeTargets | length'
-curl -s https://grafana.gameapp.games/api/health
-curl -s https://argocd.gameapp.games/healthz
+curl -s https://kbsonlong.com/api/health
+curl -s https://prometheus.kbsonlong.com/api/v1/targets | jq '.data.activeTargets | length'
+curl -s https://grafana.kbsonlong.com/api/health
+curl -s https://argocd.kbsonlong.com/healthz
 ```
 
 ---
@@ -518,7 +518,7 @@ curl -s https://argocd.gameapp.games/healthz
 
 ```bash
 # Verify your current setup from previous milestones
-curl -H "Host: gameapp.local" -s http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" -s http://localhost:8080/api/health
 # Should return: {"status":"healthy"}
 ```
 
@@ -537,7 +537,7 @@ curl -H "Host: gameapp.local" -s http://localhost:8080/api/health
 
 ```bash
 # Test game functionality
-open http://gameapp.local:8080
+open http://kbsonlong.com:8080
 
 # Add resource monitoring
 kubectl top nodes
@@ -898,7 +898,7 @@ kubectl get hpa -n humor-game
 # Generate some load to test autoscaling
 kubectl run load-test --image=busybox --rm -i --tty -- sh
 # Inside the pod:
-while true; do wget -q -O- http://gameapp.local:8080/; done
+while true; do wget -q -O- http://kbsonlong.com:8080/; done
 ```
 
 ### Step 7: Production Security Hardening
@@ -917,7 +917,7 @@ kubectl get networkpolicy -n humor-game
 kubectl describe networkpolicy -n humor-game
 
 # Test if application still functions with policies
-curl -H "Host: gameapp.local" -s http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" -s http://localhost:8080/api/health
 ```
 
 ## You Should See...
@@ -983,7 +983,7 @@ kubectl describe hpa backend-hpa -n humor-game
 
 ### Symptom: Network policies block application functionality
 **Cause:** Overly restrictive network policies
-**Command to confirm:** `curl -H "Host: gameapp.local" -s http://localhost:8080/api/health`
+**Command to confirm:** `curl -H "Host: kbsonlong.com" -s http://localhost:8080/api/health`
 **Fix:**
 ```bash
 # Check network policy configuration

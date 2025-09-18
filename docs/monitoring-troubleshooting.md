@@ -119,13 +119,13 @@ Start with simple endpoints to verify routing, then add complexity to metrics an
 ### Check if Metrics are Working
 ```bash
 # Test basic endpoint routing
-curl -s "http://gameapp.local:8080/health"
+curl -s "http://kbsonlong.com:8080/health"
 
 # Check if metrics are populated
-curl -s "http://gameapp.local:8080/metrics" | grep -E "(game_scores_total|active_games_current)"
+curl -s "http://kbsonlong.com:8080/metrics" | grep -E "(game_scores_total|active_games_current)"
 
 # Test debug endpoints
-curl -s "http://gameapp.local:8080/debug/test"
+curl -s "http://kbsonlong.com:8080/debug/test"
 ```
 
 ### Verify Docker Image Process
@@ -327,7 +327,7 @@ The port-forward failures were caused by intermittent cluster connectivity issue
 **Solution Implementation:**
 **Switched to Ingress-Based Access:**
 - Used the properly configured Ingress controller for all testing instead of relying on port-forward
-- Accessed endpoints through `http://gameapp.local:8080/endpoint` rather than `localhost:port`
+- Accessed endpoints through `http://kbsonlong.com:8080/endpoint` rather than `localhost:port`
 - This provided more stable connectivity that wasn't affected by individual pod restarts
 
 **Added Cluster Health Verification:**
@@ -361,15 +361,15 @@ Starting with complex monitoring setups leads to multiple simultaneous failure p
 ### Check if Metrics are Working
 ```bash
 # Test basic endpoint routing to confirm Ingress is working
-curl -s "http://gameapp.local:8080/health"
+curl -s "http://kbsonlong.com:8080/health"
 # Expected output: {"status":"healthy","timestamp":"..."}
 
 # Check if custom metrics are populated with actual data
-curl -s "http://gameapp.local:8080/metrics" | grep -E "(game_scores_total|active_games_current)"
+curl -s "http://kbsonlong.com:8080/metrics" | grep -E "(game_scores_total|active_games_current)"
 # Expected output: Non-zero values for active metrics
 
 # Test debug endpoints for development verification
-curl -s "http://gameapp.local:8080/debug/test"
+curl -s "http://kbsonlong.com:8080/debug/test"
 # Expected output: JSON response with debug information
 ```
 

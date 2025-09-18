@@ -6,7 +6,7 @@
 **A:** This is a production-ready humor memory game that teaches DevOps from Docker Compose to global Kubernetes deployment. You'll learn the same infrastructure patterns used by major technology companies.
 
 ### Q: Do I need a real domain name?
-**A:** No! You can complete all milestones using `gameapp.local` for local development. A real domain is only needed for the final global deployment milestone.
+**A:** No! You can complete all milestones using `kbsonlong.com` for local development. A real domain is only needed for the final global deployment milestone.
 
 ### Q: How long does this take?
 **A:** Each milestone takes 30-60 minutes for beginners. The entire project takes 4-6 hours spread over multiple sessions.
@@ -90,7 +90,7 @@
 **A:** Check resource availability with `kubectl top nodes`. If resources are low, reduce cluster size or close other applications.
 
 ### Q: I can't access my application
-**A:** Check if the ingress controller is running: `kubectl get pods -n ingress-nginx`. Verify your hosts file has `127.0.0.1 gameapp.local`.
+**A:** Check if the ingress controller is running: `kubectl get pods -n ingress-nginx`. Verify your hosts file has `127.0.0.1 kbsonlong.com`.
 
 ### Q: Monitoring shows no data
 **A:** Check if Prometheus is running: `kubectl get pods -n monitoring`. Generate some traffic to your application to create metrics.

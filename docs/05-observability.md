@@ -50,7 +50,7 @@ or
 # OPTIONAL: Set up ingress access (no port-forwarding)
 # chmod +x scripts/setup-monitoring-ingress.sh
 # ./scripts/setup-monitoring-ingress.sh
-# Access: http://grafana.gameapp.local:8080
+# Access: http://grafana.kbsonlong.com:8080
 ```
 
 ## Do This
@@ -142,14 +142,14 @@ chmod +x scripts/setup-monitoring-ingress.sh
 ./scripts/setup-monitoring-ingress.sh
 
 # Expected output:
-# ✅ Added prometheus.gameapp.local to /etc/hosts
-# ✅ Added grafana.gameapp.local to /etc/hosts
+# ✅ Added prometheus.kbsonlong.com to /etc/hosts
+# ✅ Added grafana.kbsonlong.com to /etc/hosts
 # 🎉 Monitoring ingress setup complete!
 ```
 
 **Access URLs (No Port-Forwarding Required):**
-- **Prometheus**: http://prometheus.gameapp.local:8080
-- **Grafana**: http://grafana.gameapp.local:8080
+- **Prometheus**: http://prometheus.kbsonlong.com:8080
+- **Grafana**: http://grafana.kbsonlong.com:8080
 
 > **💡 Benefits of Ingress Access:**
 > - No need to manage multiple port-forward processes
@@ -506,7 +506,7 @@ curl -s http://localhost:3001/metrics | head -10
 # In Prometheus, use "Metrics" dropdown to see available metrics
 
 # Generate some traffic to create data
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 ```
 
 ### Symptom: Prometheus pod won't start

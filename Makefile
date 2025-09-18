@@ -30,7 +30,7 @@ setup-cluster: ## Create and configure k3d cluster
 
 install-ingress: ## Install NGINX Ingress Controller
 	@echo "🌐 Installing NGINX Ingress Controller..."
-	kubectl apply -f deploy-ingress-nginx.yaml
+	kubectl apply -f k8s/deploy-ingress-nginx.yaml
 	@echo "✅ Ingress controller installed!"
 
 deploy-app: ## Deploy the main application (postgres, redis, backend, frontend)
@@ -57,7 +57,7 @@ deploy-monitoring: ## Deploy Prometheus and Grafana monitoring stack
 deploy-gitops: ## Deploy ArgoCD GitOps platform
 	@echo "🔄 Deploying ArgoCD..."
 	kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-	kubectl apply -n argocd -f argocd.yaml 
+	kubectl apply -n argocd -f k8s/argocd.yaml -f k8s/argocd-ingress.yaml
 	@echo "⏳ Waiting for ArgoCD to be ready..."
 	kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
 	kubectl apply -f gitops-safe/argocd-project.yaml
@@ -75,7 +75,7 @@ deploy-all: setup-cluster install-ingress deploy-app deploy-monitoring deploy-gi
 	@echo "🎉 Complete deployment finished!"
 	@echo ""
 	@echo "🌟 Your application is ready!"
-	@echo "🎮 Game: http://gameapp.local:8080"
+	@echo "🎮 Game: http://kbsonlong.com:8080"
 	@echo "📊 Grafana: http://localhost:3000 (port-forward required)"
 	@echo "📈 Prometheus: http://localhost:9090 (port-forward required)"
 	@echo "🔄 ArgoCD: http://localhost:8090 (port-forward required)"
@@ -110,10 +110,10 @@ test-endpoints: ## Test application endpoints
 	@echo "🧪 Testing application endpoints..."
 	@echo ""
 	@echo "🎮 Application Health:"
-	@curl -s -H "Host: gameapp.local" http://localhost:8080/api/health | jq . || echo "❌ Application not accessible"
+	@curl -s -H "Host: kbsonlong.com" http://localhost:8080/api/health | jq . || echo "❌ Application not accessible"
 	@echo ""
 	@echo "📊 Backend Metrics:"
-	@curl -s -H "Host: gameapp.local" http://localhost:8080/metrics | head -5 || echo "❌ Metrics not accessible"
+	@curl -s -H "Host: kbsonlong.com" http://localhost:8080/metrics | head -5 || echo "❌ Metrics not accessible"
 
 check-resources: ## Check resource usage and limits
 	@echo "📊 Resource Usage:"
@@ -215,8 +215,8 @@ get-passwords: ## Show important passwords and access information
 	@echo "  Password: admin"
 	@echo ""
 	@echo "🎮 Application URLs:"
-	@echo "  Local: http://gameapp.local:8080"
-	@echo "  Global: https://gameapp.games (if tunnel configured)"
+	@echo "  Local: http://kbsonlong.com:8080"
+	@echo "  Global: https://kbsonlong.com (if tunnel configured)"
 
 status: ## Show comprehensive system status
 	@echo "📊 System Status Overview:"
@@ -262,8 +262,8 @@ examples: ## Show useful example commands
 	@echo "  kubectl logs POD_NAME -n humor-game"
 	@echo ""
 	@echo "🧪 Test application:"
-	@echo "  curl -H 'Host: gameapp.local' http://localhost:8080/api/health"
-	@echo "  curl -H 'Host: gameapp.local' http://localhost:8080/api/leaderboard"
+	@echo "  curl -H 'Host: kbsonlong.com' http://localhost:8080/api/health"
+	@echo "  curl -H 'Host: kbsonlong.com' http://localhost:8080/api/leaderboard"
 	@echo ""
 	@echo "📊 Monitor resources:"
 	@echo "  kubectl top nodes"

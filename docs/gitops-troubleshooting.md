@@ -23,7 +23,7 @@ kubectl apply -f k8s/frontend.yaml
 
 # 3. Verify app is working
 kubectl get pods -n humor-game
-curl http://gameapp.local:8080/health
+curl http://kbsonlong.com:8080/health
 ```
 
 **Lesson Learned:** Always test GitOps changes on a copy, never on production first
@@ -218,7 +218,7 @@ kubectl get applications -n argocd
 kubectl get pods -n humor-game
 
 # Check app functionality
-curl http://gameapp.local:8080/health
+curl http://kbsonlong.com:8080/health
 ```
 
 ### Step 2: **Identify the Problem**
@@ -256,7 +256,7 @@ sleep 15
 kubectl get application app-name -n argocd
 
 # Test app functionality
-curl http://gameapp.local:8080/health
+curl http://kbsonlong.com:8080/health
 ```
 
 ## 🚨 Emergency Recovery Procedures
@@ -276,7 +276,7 @@ kubectl apply -f k8s/frontend.yaml
 
 # 3. Verify app is working
 kubectl get pods -n humor-game
-curl http://gameapp.local:8080/health
+curl http://kbsonlong.com:8080/health
 ```
 
 **After Recovery:**

@@ -1,15 +1,15 @@
 # Domain Replacement Guide
 
-*Complete list of all files where you need to replace `gameapp.games` with your own domain*
+*Complete list of all files where you need to replace `kbsonlong.com` with your own domain*
 
 ## 🚨 **IMPORTANT: Replace Demo Domain Before Starting**
 
-**Before you begin this project, you MUST replace all instances of `gameapp.games` with your own domain name.**
+**Before you begin this project, you MUST replace all instances of `kbsonlong.com` with your own domain name.**
 
 **Example:** If your domain is `myapp.com`, replace:
-- `gameapp.games` → `myapp.com`
-- `app.gameapp.games` → `app.myapp.com`
-- `prometheus.gameapp.games` → `prometheus.myapp.com`
+- `kbsonlong.com` → `myapp.com`
+- `app.kbsonlong.com` → `app.myapp.com`
+- `prometheus.kbsonlong.com` → `prometheus.myapp.com`
 
 ## 📁 **Files That Need Domain Replacement**
 
@@ -19,21 +19,21 @@
 ```yaml
 # Lines 15, 59, 122, 123, 146, 156, 185, 198
 # Replace ALL instances of:
-- gameapp.games  # Production domain with SSL
-- host: gameapp.games  # For production (with SSL)
-- prometheus.gameapp.games  # Production Prometheus with SSL
-- grafana.gameapp.games     # Production Grafana with SSL
-- host: prometheus.gameapp.games  # Production Prometheus access
-- host: grafana.gameapp.games  # Production Grafana access
-- argocd.gameapp.games  # Production ArgoCD with SSL
-- host: argocd.gameapp.games  # Production ArgoCD access
+- kbsonlong.com  # Production domain with SSL
+- host: kbsonlong.com  # For production (with SSL)
+- prometheus.kbsonlong.com  # Production Prometheus with SSL
+- grafana.kbsonlong.com     # Production Grafana with SSL
+- host: prometheus.kbsonlong.com  # Production Prometheus access
+- host: grafana.kbsonlong.com  # Production Grafana access
+- argocd.kbsonlong.com  # Production ArgoCD with SSL
+- host: argocd.kbsonlong.com  # Production ArgoCD access
 ```
 
 #### **`k8s/tunnel-ingress.yaml`**
 ```yaml
 # Line 12
 # Replace:
-- host: app.gameapp.games  # Tunnel subdomain (no SSL redirect)
+- host: app.kbsonlong.com  # Tunnel subdomain (no SSL redirect)
 ```
 
 ### **2. Backend Configuration**
@@ -42,21 +42,21 @@
 ```javascript
 // Line 39
 // Replace:
-'https://gameapp.games:8443',  // Add your domain for production
+'https://kbsonlong.com:8443',  // Add your domain for production
 ```
 
 #### **`k8s/configmap.yaml`**
 ```yaml
 # Line 13
 # Replace:
-CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://gameapp.games"
+CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://kbsonlong.com"
 ```
 
 #### **`gitops-safe/base/configmap.yaml`**
 ```yaml
 # Line 13
 # Replace:
-CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://gameapp.games"
+CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://kbsonlong.com"
 ```
 
 ### **3. Nginx Configuration**
@@ -65,14 +65,14 @@ CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://gameapp.games"
 ```nginx
 # Line 14
 # Replace:
-server_name localhost gameapp.games;
+server_name localhost kbsonlong.com;
 ```
 
 #### **`nginx/conf.d.dev/default.conf`**
 ```nginx
 # Line 15
 # Replace:
-server_name localhost gameapp.games;
+server_name localhost kbsonlong.com;
 ```
 
 ### **4. Cloudflare Tunnel Configuration**
@@ -81,9 +81,9 @@ server_name localhost gameapp.games;
 ```yaml
 # Lines 4, 5, 13, 20
 # Replace:
-- hostname: app.gameapp.games
-- hostname: prometheus.app.gameapp.games
-- hostname: grafana.app.gameapp.games
+- hostname: app.kbsonlong.com
+- hostname: prometheus.app.kbsonlong.com
+- hostname: grafana.app.kbsonlong.com
 ```
 
 ### **5. Frontend Configuration**
@@ -92,8 +92,8 @@ server_name localhost gameapp.games;
 ```javascript
 // Lines 31, 35
 // Replace:
-} else if (hostname === 'gameapp.games') {
-} else if (hostname.includes('gameapp.games') || hostname.includes('app.gameapp.games')) {
+} else if (hostname === 'kbsonlong.com') {
+} else if (hostname.includes('kbsonlong.com') || hostname.includes('app.kbsonlong.com')) {
 ```
 
 ### **6. Documentation Files**
@@ -102,32 +102,32 @@ server_name localhost gameapp.games;
 ```markdown
 # Lines 332, 349, 351
 # Replace:
-security@gameapp.games
-support@gameapp.games
-docs.gameapp.games
+security@kbsonlong.com
+support@kbsonlong.com
+docs.kbsonlong.com
 ```
 
 #### **`docs/monitoring-access-guide.md`**
 ```markdown
 # Lines 34, 35, 57, 58
 # Replace:
-prometheus.gameapp.games
-grafana.gameapp.games
+prometheus.kbsonlong.com
+grafana.kbsonlong.com
 ```
 
 #### **`scripts/access-monitoring.sh`**
 ```bash
 # Lines 124, 125
 # Replace:
-prometheus.gameapp.games
-grafana.gameapp.games
+prometheus.kbsonlong.com
+grafana.kbsonlong.com
 ```
 
 #### **`Makefile`**
 ```makefile
 # Line 220
 # Replace:
-@echo "🌐 Access your app: https://gameapp.games"
+@echo "🌐 Access your app: https://kbsonlong.com"
 ```
 
 ## 🔧 **How to Replace Domains**
@@ -146,7 +146,7 @@ find . -type f -name "*.yaml" -o -name "*.js" -o -name "*.md" -o -name "*.conf" 
 
 ### **Method 2: Manual Replacement**
 1. Open each file listed above
-2. Use Ctrl+F (Cmd+F on Mac) to find `gameapp.games`
+2. Use Ctrl+F (Cmd+F on Mac) to find `kbsonlong.com`
 3. Replace with your domain
 4. Save the file
 
@@ -188,7 +188,7 @@ find . -type f -name "*.yaml" -o -name "*.js" -o -name "*.md" -o -name "*.conf" 
 After replacing domains, verify with:
 ```bash
 # Check if any instances remain
-grep -r "gameapp.games" . --exclude-dir=node_modules --exclude-dir=.git
+grep -r "kbsonlong.com" . --exclude-dir=node_modules --exclude-dir=.git
 
 # Should return no results
 ```

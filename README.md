@@ -189,9 +189,9 @@ curl http://localhost:3001/api/health
 ## ⚠️ **Important Setup Notes**
 
 ### **🔑 Domain Configuration**
-> **CRITICAL**: This project uses `gameapp.games` as an example domain. For your own deployment:
+> **CRITICAL**: This project uses `kbsonlong.com` as an example domain. For your own deployment:
 > 1. **Get a domain** (free options available for learning)
-> 2. Replace all instances of `gameapp.games` with your domain
+> 2. Replace all instances of `kbsonlong.com` with your domain
 > 3. Configure Cloudflare DNS for your domain
 > 4. Update ingress configurations accordingly
 > 

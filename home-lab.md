@@ -4,7 +4,7 @@
 
 ## 🚨 **CRITICAL: READ THIS BEFORE STARTING**
 
-**⚠️ IMPORTANT:** This project uses a demo domain (`gameapp.games`) that you MUST replace with your own domain before beginning.
+**⚠️ IMPORTANT:** This project uses a demo domain (`kbsonlong.com`) that you MUST replace with your own domain before beginning.
 
 **🔗 See: [Domain Replacement Guide](docs/domain-replacement-guide.md)** for the complete list of files to update.
 

@@ -11,7 +11,7 @@ data:
   REDIS_PORT: "6379"
   API_PORT: "3001"
   # Use the same nginx proxy pattern for both environments
-  CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://gameapp.games"
+  CORS_ORIGIN: "http://localhost:3000,http://localhost:8080,https://kbsonlong.com"
   FRONTEND_URL: "http://localhost:8080"
   API_BASE_URL: "/api"
 

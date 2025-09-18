@@ -68,9 +68,9 @@ kubectl get service -n ingress-nginx humor-game-ingress-ingress-nginx-controller
 1. Click **"Start migration"**
 2. In the migration wizard, verify tunnel name and connectors
 3. **CRITICAL:** Update the origin configurations for each hostname:
-   - `app.gameapp.games` → `http://172.20.10.3:8080`
-   - `grafana.gameapp.games` → `http://172.20.10.3:8080`
-   - `prometheus.gameapp.games` → `http://172.20.10.3:8080`
+   - `app.kbsonlong.com` → `http://172.20.10.3:8080`
+   - `grafana.kbsonlong.com` → `http://172.20.10.3:8080`
+   - `prometheus.kbsonlong.com` → `http://172.20.10.3:8080`
 4. Click **"Confirm"** to complete migration
 
 #### Step 7: Restart Your Local Tunnel
@@ -85,17 +85,17 @@ cloudflared tunnel run gameapp-tunnel
 #### Step 8: Test All Domains
 ```bash
 # Test main app
-curl -I "https://app.gameapp.games"
+curl -I "https://app.kbsonlong.com"
 
 # Test monitoring subdomains
-curl -I "https://grafana.gameapp.games"
-curl -I "https://prometheus.gameapp.games"
+curl -I "https://grafana.kbsonlong.com"
+curl -I "https://prometheus.kbsonlong.com"
 ```
 
 **Expected Results:**
-- `app.gameapp.games` → HTTP/2 200
-- `grafana.gameapp.games` → HTTP/2 302 (redirect)
-- `prometheus.gameapp.games` → HTTP/2 405 (method not allowed - normal)
+- `app.kbsonlong.com` → HTTP/2 200
+- `grafana.kbsonlong.com` → HTTP/2 302 (redirect)
+- `prometheus.kbsonlong.com` → HTTP/2 405 (method not allowed - normal)
 
 ### Issue 2: Tunnel Ignoring Local Config File
 

@@ -46,15 +46,15 @@
 | **HPA** | frontend-hpa | k8s/hpa.yaml:28 |
 | **PVC** | prometheus-pvc | k8s/monitoring.yaml:255, k8s/simple-monitoring.yaml:49 |
 | **PVC** | grafana-pvc | k8s/monitoring.yaml:329, k8s/simple-monitoring.yaml:156 |
-| **Host** | gameapp.local | k8s/ingress.yaml:18, scripts/production-metrics-test.sh:194 |
-| **Host** | gameapp.games | k8s/ingress.yaml:59, k8s/configmap.yaml:13, k8s/tunnel-ingress.yaml:14 |
-| **Host** | app.gameapp.games | k8s/tunnel-ingress.yaml:14, k8s/unified-ingress.yaml:29 |
-| **Host** | prometheus.gameapp.games | k8s/monitoring-tunnel-ingress.yaml:18, k8s/tunnel-ingress.yaml:99 |
-| **Host** | grafana.gameapp.games | k8s/monitoring-tunnel-ingress.yaml:29, k8s/tunnel-ingress.yaml:72 |
-| **Host** | argocd.gameapp.local | k8s/ingress.yaml:123 |
-| **Host** | argocd.gameapp.games | k8s/ingress.yaml:133, k8s/tunnel-ingress.yaml:126, k8s/unified-ingress.yaml:202 |
-| **Host** | prometheus.gameapp.local | scripts/access-monitoring.sh:104,111 |
-| **Host** | grafana.gameapp.local | scripts/access-monitoring.sh:105,112 |
+| **Host** | kbsonlong.com | k8s/ingress.yaml:18, scripts/production-metrics-test.sh:194 |
+| **Host** | kbsonlong.com | k8s/ingress.yaml:59, k8s/configmap.yaml:13, k8s/tunnel-ingress.yaml:14 |
+| **Host** | app.kbsonlong.com | k8s/tunnel-ingress.yaml:14, k8s/unified-ingress.yaml:29 |
+| **Host** | prometheus.kbsonlong.com | k8s/monitoring-tunnel-ingress.yaml:18, k8s/tunnel-ingress.yaml:99 |
+| **Host** | grafana.kbsonlong.com | k8s/monitoring-tunnel-ingress.yaml:29, k8s/tunnel-ingress.yaml:72 |
+| **Host** | argocd.kbsonlong.com | k8s/ingress.yaml:123 |
+| **Host** | argocd.kbsonlong.com | k8s/ingress.yaml:133, k8s/tunnel-ingress.yaml:126, k8s/unified-ingress.yaml:202 |
+| **Host** | prometheus.kbsonlong.com | scripts/access-monitoring.sh:104,111 |
+| **Host** | grafana.kbsonlong.com | scripts/access-monitoring.sh:105,112 |
 | **Docker Service** | postgres | docker-compose.yml:6 |
 | **Docker Service** | redis | docker-compose.yml:32 |
 | **Docker Service** | backend | docker-compose.yml:58 |
@@ -176,24 +176,24 @@
 
 ### Host Values
 **FOUND IN:**
-- `k8s/ingress.yaml:18` - `host: gameapp.local`
-- `k8s/ingress.yaml:59` - `host: gameapp.games`
-- `k8s/tunnel-ingress.yaml:14` - `host: app.gameapp.games`
-- `k8s/monitoring-tunnel-ingress.yaml:18` - `host: prometheus.gameapp.games`
-- `k8s/monitoring-tunnel-ingress.yaml:29` - `host: grafana.gameapp.games`
-- `scripts/production-metrics-test.sh:194` - `http://gameapp.local:8080`
-- `scripts/access-monitoring.sh:104,105` - `prometheus.gameapp.local`, `grafana.gameapp.local`
+- `k8s/ingress.yaml:18` - `host: kbsonlong.com`
+- `k8s/ingress.yaml:59` - `host: kbsonlong.com`
+- `k8s/tunnel-ingress.yaml:14` - `host: app.kbsonlong.com`
+- `k8s/monitoring-tunnel-ingress.yaml:18` - `host: prometheus.kbsonlong.com`
+- `k8s/monitoring-tunnel-ingress.yaml:29` - `host: grafana.kbsonlong.com`
+- `scripts/production-metrics-test.sh:194` - `http://kbsonlong.com:8080`
+- `scripts/access-monitoring.sh:104,105` - `prometheus.kbsonlong.com`, `grafana.kbsonlong.com`
 
 **EVIDENCE:**
 ```yaml
 # k8s/ingress.yaml:18
-  - host: gameapp.local  # For local development (no SSL)
+  - host: kbsonlong.com  # For local development (no SSL)
 
 # k8s/ingress.yaml:59
-  - host: gameapp.games  # For production (with SSL)
+  - host: kbsonlong.com  # For production (with SSL)
 
 # scripts/production-metrics-test.sh:194
-echo -e "  • Your App: http://gameapp.local:8080"
+echo -e "  • Your App: http://kbsonlong.com:8080"
 ```
 
 ### Docker Service Names
@@ -267,7 +267,7 @@ console.log('🔧 Current window.API_BASE_URL:', window.API_BASE_URL);
 - Found: All service, deployment, and resource names
 
 **grep -R "host:" k8s/ | grep -v "#"**
-- Found: gameapp.local, gameapp.games, app.gameapp.games, prometheus.gameapp.games, grafana.gameapp.games, argocd.gameapp.local, argocd.gameapp.games
+- Found: kbsonlong.com, kbsonlong.com, app.kbsonlong.com, prometheus.kbsonlong.com, grafana.kbsonlong.com, argocd.kbsonlong.com, argocd.kbsonlong.com
 
 **grep -R "service:" docker-compose.yml**
 - Found: postgres, redis, backend, frontend

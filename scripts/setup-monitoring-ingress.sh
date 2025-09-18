@@ -14,18 +14,18 @@ sleep 5
 echo "📝 Adding local DNS entries to /etc/hosts..."
 
 # Check if entries already exist
-if ! grep -q "prometheus.gameapp.local" /etc/hosts; then
-    echo "127.0.0.1 prometheus.gameapp.local" | sudo tee -a /etc/hosts
-    echo "✅ Added prometheus.gameapp.local to /etc/hosts"
+if ! grep -q "prometheus.kbsonlong.com" /etc/hosts; then
+    echo "127.0.0.1 prometheus.kbsonlong.com" | sudo tee -a /etc/hosts
+    echo "✅ Added prometheus.kbsonlong.com to /etc/hosts"
 else
-    echo "ℹ️  prometheus.gameapp.local already exists in /etc/hosts"
+    echo "ℹ️  prometheus.kbsonlong.com already exists in /etc/hosts"
 fi
 
-if ! grep -q "grafana.gameapp.local" /etc/hosts; then
-    echo "127.0.0.1 grafana.gameapp.local" | sudo tee -a /etc/hosts
-    echo "✅ Added grafana.gameapp.local to /etc/hosts"
+if ! grep -q "grafana.kbsonlong.com" /etc/hosts; then
+    echo "127.0.0.1 grafana.kbsonlong.com" | sudo tee -a /etc/hosts
+    echo "✅ Added grafana.kbsonlong.com to /etc/hosts"
 else
-    echo "ℹ️  grafana.gameapp.local already exists in /etc/hosts"
+    echo "ℹ️  grafana.kbsonlong.com already exists in /etc/hosts"
 fi
 
 # Check ingress status
@@ -36,8 +36,8 @@ echo ""
 echo "🎉 Monitoring ingress setup complete!"
 echo ""
 echo "📊 Access your monitoring services:"
-echo "   Prometheus: http://prometheus.gameapp.local:8080"
-echo "   Grafana:   http://grafana.gameapp.local:8080"
+echo "   Prometheus: http://prometheus.kbsonlong.com:8080"
+echo "   Grafana:   http://grafana.kbsonlong.com:8080"
 echo ""
 echo "🔐 Grafana credentials:"
 echo "   Username: admin"

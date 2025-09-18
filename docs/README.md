@@ -124,7 +124,7 @@ make verify
 # Application health check
 kubectl get pods -n humor-game
 kubectl get svc -n humor-game
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 
 # Monitoring status
 kubectl get pods -n monitoring

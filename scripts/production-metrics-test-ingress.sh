@@ -7,7 +7,7 @@ echo "🚀 Production Metrics Test - Humor Memory Game (Ingress Version)"
 echo "================================================================"
 
 # Configuration - Using Ingress instead of port-forwarding
-BACKEND_URL="http://gameapp.local:8080"
+BACKEND_URL="http://kbsonlong.com:8080"
 TEST_DURATION=300  # 5 minutes
 USERS=10
 GAMES_PER_USER=5

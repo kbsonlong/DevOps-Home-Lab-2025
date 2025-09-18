@@ -37,7 +37,7 @@ let corsOrigins = [
   'http://localhost:3002', // For local development
   'http://localhost:80',   // For local development
   'http://frontend',       // Kubernetes service name
-  'https://gameapp.games:8443',  // Add your domain for production
+  'https://kbsonlong.com:8443',  // Add your domain for production
 ];
 
 if (process.env.CORS_ORIGIN) {

@@ -13,7 +13,7 @@ spec:
   ingressClassName: nginx
   rules:
     # Prometheus subdomain
-    - host: prometheus.gameapp.local
+    - host: prometheus.kbsonlong.com
       http:
         paths:
           - path: /
@@ -25,7 +25,7 @@ spec:
                   number: 9090
     
     # Grafana subdomain  
-    - host: grafana.gameapp.local
+    - host: grafana.kbsonlong.com
       http:
         paths:
           - path: /

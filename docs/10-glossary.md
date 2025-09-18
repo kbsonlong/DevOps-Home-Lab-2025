@@ -78,7 +78,7 @@
 
 **ClusterIP**: A type of Kubernetes Service that exposes the service on a cluster-internal IP. Only accessible from within the cluster.
 
-**DNS**: Domain Name System. Translates human-readable domain names (like gameapp.local) into IP addresses.
+**DNS**: Domain Name System. Translates human-readable domain names (like kbsonlong.com) into IP addresses.
 
 **LoadBalancer**: A type of Kubernetes Service that exposes the service externally using the cloud provider's load balancer.
 

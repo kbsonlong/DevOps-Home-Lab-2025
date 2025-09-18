@@ -119,8 +119,8 @@ kubectl get clusterrole | grep prometheus
 ### **6. Monitoring Ingress Access Issues (Browser Loading Problems)**
 
 #### **Problem**
-- Browser never loads `http://prometheus.gameapp.local:8080`
-- Browser never loads `http://grafana.gameapp.local:8080`
+- Browser never loads `http://prometheus.kbsonlong.com:8080`
+- Browser never loads `http://grafana.kbsonlong.com:8080`
 - Pages keep loading indefinitely
 - "This site can't be reached" errors
 
@@ -130,12 +130,12 @@ k3d cluster port mapping requires localhost instead of cluster IP in `/etc/hosts
 #### **Solution**
 ```bash
 # 1. Fix hosts file entries
-sudo sed -i '' '/prometheus.gameapp.local/d' /etc/hosts
-sudo sed -i '' '/grafana.gameapp.local/d' /etc/hosts
+sudo sed -i '' '/prometheus.kbsonlong.com/d' /etc/hosts
+sudo sed -i '' '/grafana.kbsonlong.com/d' /etc/hosts
 
 # Add correct localhost entries
-echo "127.0.0.1 prometheus.gameapp.local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 grafana.gameapp.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 prometheus.kbsonlong.com" | sudo tee -a /etc/hosts
+echo "127.0.0.1 grafana.kbsonlong.com" | sudo tee -a /etc/hosts
 
 # 2. Verify ingress controller is running
 kubectl get pods -n ingress-nginx
@@ -144,13 +144,13 @@ kubectl get pods -n ingress-nginx
 kubectl get ingress -A
 
 # 4. Test connectivity
-curl -s --max-time 5 -u "admin:admin123" -H "Host: prometheus.gameapp.local" http://localhost:8080/-/healthy
-curl -s --max-time 5 -u "admin:admin123" -H "Host: grafana.gameapp.local" http://localhost:8080/api/health
+curl -s --max-time 5 -u "admin:admin123" -H "Host: prometheus.kbsonlong.com" http://localhost:8080/-/healthy
+curl -s --max-time 5 -u "admin:admin123" -H "Host: grafana.kbsonlong.com" http://localhost:8080/api/health
 ```
 
 #### **Access URLs (Fixed)**
-- **Prometheus**: http://prometheus.gameapp.local:8080
-- **Grafana**: http://grafana.gameapp.local:8080
+- **Prometheus**: http://prometheus.kbsonlong.com:8080
+- **Grafana**: http://grafana.kbsonlong.com:8080
 - **Credentials**: admin/admin123
 
 ### **7. Monitoring Authentication Issues**
@@ -178,7 +178,7 @@ kubectl rollout restart deployment -n ingress-nginx humor-game-ingress-ingress-n
 
 # 4. Wait for restart and test
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx --timeout=60s
-curl -s -u "admin:admin123" -H "Host: prometheus.gameapp.local" http://localhost:8080/-/healthy
+curl -s -u "admin:admin123" -H "Host: prometheus.kbsonlong.com" http://localhost:8080/-/healthy
 ```
 
 ## **🏗️ Milestone-Specific Troubleshooting**
@@ -330,7 +330,7 @@ kubectl exec -it deployment/postgres -n humor-game -- psql -U gameuser -d humor_
 # Fix: Update frontend/nginx.conf to prioritize /scripts/, /styles/, /components/
 
 # Verify fix:
-curl -H "Host: gameapp.local" -I http://localhost:8080/scripts/game.js
+curl -H "Host: kbsonlong.com" -I http://localhost:8080/scripts/game.js
 # Should return: Content-Type: application/javascript, not text/html
 ```
 
@@ -411,13 +411,13 @@ kubectl get ingress -n humor-game
 kubectl describe ingress humor-game-ingress -n humor-game
 
 # Check hosts file
-grep gameapp.local /etc/hosts
+grep kbsonlong.com /etc/hosts
 
-# Should see: 127.0.0.1 gameapp.local
+# Should see: 127.0.0.1 kbsonlong.com
 
 # Test connectivity
-curl -H "Host: gameapp.local" http://localhost:8080/
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 ```
 
 #### **Problem: Ingress Not Routing /api/* Requests to Backend**
@@ -429,7 +429,7 @@ curl -H "Host: gameapp.local" http://localhost:8080/api/health
 # Fix: Ensure backend has app.get('/api/health', ...) and app.use('/api/*', ...)
 
 # Verify fix:
-curl -H "Host: gameapp.local" -s http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" -s http://localhost:8080/api/health
 # Should return: {"status":"healthy",...}
 ```
 
@@ -510,7 +510,7 @@ kubectl get endpoints -n humor-game
 # In Prometheus, use "Metrics" dropdown to see available metrics
 
 # Generate some traffic to create data
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 ```
 
 #### **Problem: Prometheus Pod Won't Start**
@@ -565,7 +565,7 @@ curl -s http://localhost:3001/health
 
 # Or manually generate traffic
 for i in {1..50}; do
-  curl -H "Host: gameapp.local" http://localhost:8080/api/health > /dev/null 2>&1
+  curl -H "Host: kbsonlong.com" http://localhost:8080/api/health > /dev/null 2>&1
   sleep 0.5
 done
 ```

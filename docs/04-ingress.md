@@ -19,7 +19,7 @@ An Ingress Controller is like the front door to your application. It routes inte
 
 **What this means for you**: Every production application needs networking. Learning Ingress teaches you how companies like Netflix and Airbnb make their services accessible to millions of users.
 
-ℹ️ **Simple Explanation:** An Ingress Controller is like a smart traffic director. It looks at incoming requests (like "go to gameapp.local") and routes them to the right service in your Kubernetes cluster.
+ℹ️ **Simple Explanation:** An Ingress Controller is like a smart traffic director. It looks at incoming requests (like "go to kbsonlong.com") and routes them to the right service in your Kubernetes cluster.
 
 ## Do This
 
@@ -96,7 +96,7 @@ kubectl get ingress -n humor-game
 **Expected Output:**
 ```bash
 NAME                 CLASS   HOSTS           ADDRESS      PORTS   AGE
-humor-game-ingress   nginx   gameapp.local   172.18.0.3   80      2m
+humor-game-ingress   nginx   kbsonlong.com   172.18.0.3   80      2m
 ```
 
 ### Step 2: Configure Local Domain and Test Access
@@ -104,34 +104,34 @@ humor-game-ingress   nginx   gameapp.local   172.18.0.3   80      2m
 **Set up local domain for development:**
 ```bash
 # Add local domain to your hosts file
-echo "127.0.0.1 gameapp.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 kbsonlong.com" | sudo tee -a /etc/hosts
 ```
 
 **Expected Output:**
 ```bash
-127.0.0.1 gameapp.local
+127.0.0.1 kbsonlong.com
 ```
 
 ```bash
 # Verify DNS resolution works
-ping gameapp.local
+ping kbsonlong.com
 # Should ping 127.0.0.1 successfully
 ```
 
 **Expected Output:**
 ```bash
-PING gameapp.local (127.0.0.1): 56 data bytes
-64 bytes from gameapp.local (127.0.0.1): icmp_seq=1 time=0.037 ms
-64 bytes from gameapp.local (127.0.0.1): icmp_seq=2 time=0.034 ms
-64 bytes from gameapp.local (127.0.0.1): icmp_seq=3 time=0.033 ms
---- gameapp.local ping statistics ---
+PING kbsonlong.com (127.0.0.1): 56 data bytes
+64 bytes from kbsonlong.com (127.0.0.1): icmp_seq=1 time=0.037 ms
+64 bytes from kbsonlong.com (127.0.0.1): icmp_seq=2 time=0.034 ms
+64 bytes from kbsonlong.com (127.0.0.1): icmp_seq=3 time=0.033 ms
+--- kbsonlong.com ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss
 ```
 
 **Test your Kubernetes application:**
 ```bash
 # Test frontend through Ingress
-curl -H "Host: gameapp.local" -I http://localhost:8080/
+curl -H "Host: kbsonlong.com" -I http://localhost:8080/
 ```
 
 **Expected Output:**
@@ -151,7 +151,7 @@ Accept-Ranges: bytes
 
 ```bash
 # Test API health through Ingress
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 ```
 
 **Expected Output:**
@@ -171,7 +171,7 @@ curl -H "Host: gameapp.local" http://localhost:8080/api/health
 
 ```bash
 # Open in browser with domain
-open http://gameapp.local:8080
+open http://kbsonlong.com:8080
 ```
 
 ### Step 3: Verify Ingress Configuration
@@ -185,7 +185,7 @@ kubectl get ingress -n humor-game
 **Expected Output:**
 ```bash
 NAME                 CLASS   HOSTS           ADDRESS      PORTS   AGE
-humor-game-ingress   nginx   gameapp.local   172.18.0.3   80      13m
+humor-game-ingress   nginx   kbsonlong.com   172.18.0.3   80      13m
 ```
 
 ```bash
@@ -205,14 +205,14 @@ ingress-nginx-controller-5445788fcd-qn4x2   1/1     Running     0          73s
 ```bash
 # Verify ingress rules
 kubectl describe ingress humor-game-ingress -n humor-game
-# Should show rules for gameapp.local
+# Should show rules for kbsonlong.com
 ```
 
 ### Step 4: Test Full Application Functionality
 
 ```bash
 # Test frontend loads
-curl -H "Host: gameapp.local" -I http://localhost:8080/
+curl -H "Host: kbsonlong.com" -I http://localhost:8080/
 # Should return: HTTP/1.1 200 OK
 ```
 
@@ -233,13 +233,13 @@ Accept-Ranges: bytes
 
 ```bash
 # Test API endpoints
-curl -H "Host: gameapp.local" http://localhost:8080/api/health
+curl -H "Host: kbsonlong.com" http://localhost:8080/api/health
 # Should return: {"status":"healthy",...}
 ```
 
 ```bash
 # Test metrics endpoint
-curl -H "Host: gameapp.local" http://localhost:8080/metrics
+curl -H "Host: kbsonlong.com" http://localhost:8080/metrics
 # Should return Prometheus metrics
 ```
 
@@ -248,7 +248,7 @@ curl -H "Host: gameapp.local" http://localhost:8080/metrics
 **Ingress Status:**
 ```bash
 NAME                 CLASS   HOSTS           ADDRESS      PORTS   AGE
-humor-game-ingress   nginx   gameapp.local   172.18.0.3   80      13m
+humor-game-ingress   nginx   kbsonlong.com   172.18.0.3   80      13m
 ```
 
 **Ingress Controller Status:**
@@ -259,8 +259,8 @@ ingress-nginx-controller-5445788fcd-qn4x2   1/1     Running     0          73s
 
 **Host Resolution:**
 ```bash
-PING gameapp.local (127.0.0.1): 56 data bytes
-64 bytes from gameapp.local (127.0.0.1): icmp_seq=1 time=0.037 ms
+PING kbsonlong.com (127.0.0.1): 56 data bytes
+64 bytes from kbsonlong.com (127.0.0.1): icmp_seq=1 time=0.037 ms
 ```
 
 **Frontend Response:**
@@ -286,8 +286,8 @@ Content-Type: text/html
 
 Your Ingress setup is working when:
 - ✅ Ingress controller pods are running in ingress-nginx namespace
-- ✅ Ingress rules are configured for gameapp.local
-- ✅ Frontend loads at `http://gameapp.local:8080` through Ingress
+- ✅ Ingress rules are configured for kbsonlong.com
+- ✅ Frontend loads at `http://kbsonlong.com:8080` through Ingress
 - ✅ Backend API responds to health checks through Ingress
 - ✅ Ingress routes traffic correctly to both frontend and backend
 
@@ -311,7 +311,7 @@ k3d cluster create dev-cluster --servers 1 --agents 1 --k3s-arg --disable=traefi
 
 ### Symptom: Ingress not accessible through k3d load balancer
 **Cause:** Ingress controller not configured with hostPorts for k3d compatibility
-**Command to confirm:** `curl -H "Host: gameapp.local" -I http://localhost:8080/`
+**Command to confirm:** `curl -H "Host: kbsonlong.com" -I http://localhost:8080/`
 **Fix:**
 ```bash
 # Configure ingress controller to use hostPorts
@@ -321,7 +321,7 @@ kubectl patch deployment ingress-nginx-controller -n ingress-nginx -p '{"spec":{
 kubectl rollout status deployment/ingress-nginx-controller -n ingress-nginx
 
 # Test again
-curl -H "Host: gameapp.local" -I http://localhost:8080/
+curl -H "Host: kbsonlong.com" -I http://localhost:8080/
 ```
 
 ### Symptom: SSL certificate errors in ingress controller logs
@@ -351,7 +351,7 @@ kubectl delete ingress humor-game-ingress -n humor-game
 kubectl delete namespace ingress-nginx
 
 # Reset hosts file
-sudo sed -i '/gameapp.local/d' /etc/hosts
+sudo sed -i '/kbsonlong.com/d' /etc/hosts
 
 # Restart ingress controller
 kubectl rollout restart deployment/ingress-nginx-controller -n ingress-nginx
@@ -366,16 +366,16 @@ kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
 The documentation shows different URLs for different purposes:
 
 - **`localhost:8080`** - For direct service testing and curl commands with Host headers
-- **`gameapp.local:8080`** - For actual user access through the browser  
-- **`Host: gameapp.local`** - For testing Ingress routing
+- **`kbsonlong.com:8080`** - For actual user access through the browser  
+- **`Host: kbsonlong.com`** - For testing Ingress routing
 
 This gives you **both development and production access patterns**:
 
 - **Developers**: Use `localhost:8080` for direct testing and debugging
-- **Users**: Access via `gameapp.local:8080` through Ingress (production-style)
+- **Users**: Access via `kbsonlong.com:8080` through Ingress (production-style)
 - **DevOps Engineers**: Can test both patterns to verify routing works correctly
 
-**Why both?** `localhost:8080` is the local port that k3d exposes, while `gameapp.local:8080` is the domain that Ingress routes to your services.
+**Why both?** `localhost:8080` is the local port that k3d exposes, while `kbsonlong.com:8080` is the domain that Ingress routes to your services.
 
 ## What You Learned
 
@@ -396,4 +396,4 @@ You've implemented production networking with Ingress routing:
 
 ---
 
-*Ingress milestone completed successfully. Application accessible via gameapp.local:8080, ready for [05-observability.md](05-observability.md).*
+*Ingress milestone completed successfully. Application accessible via kbsonlong.com:8080, ready for [05-observability.md](05-observability.md).*

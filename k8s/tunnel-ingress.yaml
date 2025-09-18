@@ -12,7 +12,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: app.gameapp.games  # Cloudflare tunnel subdomain
+    - host: app.kbsonlong.com  # Cloudflare tunnel subdomain
       http:
         paths:
           # API routes - forward to backend
@@ -70,7 +70,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: grafana.gameapp.games  # Monitoring subdomain
+    - host: grafana.kbsonlong.com  # Monitoring subdomain
       http:
         paths:
           - path: /
@@ -97,7 +97,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: prometheus.gameapp.games  # Monitoring subdomain
+    - host: prometheus.kbsonlong.com  # Monitoring subdomain
       http:
         paths:
           - path: /
@@ -124,7 +124,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.gameapp.games  # ArgoCD subdomain
+    - host: argocd.kbsonlong.com  # ArgoCD subdomain
       http:
         paths:
           - path: /

@@ -2,7 +2,7 @@
 # This single file handles all routing for Cloudflare Tunnel and local access
 
 ---
-# Main Application Ingress (for app.gameapp.games and gameapp.games)
+# Main Application Ingress (for app.kbsonlong.com and kbsonlong.com)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -27,7 +27,7 @@ spec:
   ingressClassName: nginx
   rules:
     # Main app subdomain
-    - host: app.gameapp.games
+    - host: app.kbsonlong.com
       http:
         paths:
           # API routes - forward to backend
@@ -70,7 +70,7 @@ spec:
                   number: 80
     
     # Main domain
-    - host: gameapp.games
+    - host: kbsonlong.com
       http:
         paths:
           # API routes - forward to backend
@@ -113,7 +113,7 @@ spec:
                   number: 80
 
 ---
-# Grafana Ingress (for grafana.gameapp.games)
+# Grafana Ingress (for grafana.kbsonlong.com)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -132,7 +132,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: grafana.gameapp.games
+    - host: grafana.kbsonlong.com
       http:
         paths:
           - path: /
@@ -144,7 +144,7 @@ spec:
                   number: 3000
 
 ---
-# Prometheus Ingress (for prometheus.gameapp.games)
+# Prometheus Ingress (for prometheus.kbsonlong.com)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -163,7 +163,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: prometheus.gameapp.games
+    - host: prometheus.kbsonlong.com
       http:
         paths:
           - path: /
@@ -175,7 +175,7 @@ spec:
                   number: 9090
 
 ---
-# ArgoCD Ingress (for argocd.gameapp.games)
+# ArgoCD Ingress (for argocd.kbsonlong.com)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -200,7 +200,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.gameapp.games
+    - host: argocd.kbsonlong.com
       http:
         paths:
           - path: /

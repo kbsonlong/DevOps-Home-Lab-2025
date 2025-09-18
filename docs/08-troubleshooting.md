@@ -96,7 +96,7 @@ kubectl describe service <service-name> -n humor-game
 | Symptom | Cause | Command to Confirm | Fix |
 |---------|-------|-------------------|-----|
 | **Ingress controller not found** | Ingress controller not installed | `kubectl get pods -n ingress-nginx` | Install ingress: `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml` |
-| **Domain not resolving** | /etc/hosts not configured | `cat /etc/hosts \| grep gameapp` | Add entry: `127.0.0.1 gameapp.local` |
+| **Domain not resolving** | /etc/hosts not configured | `cat /etc/hosts \| grep gameapp` | Add entry: `127.0.0.1 kbsonlong.com` |
 | **Ingress shows 404** | Service selector mismatch | `kubectl get ingress -n humor-game -o yaml` | Check service names and ports in ingress.yaml |
 | **TLS certificate errors** | cert-manager not installed | `kubectl get pods -n cert-manager` | Install cert-manager for Let's Encrypt certificates |
 

@@ -48,10 +48,10 @@ A complete production application stack featuring:
 | **0. Setup** | Tools ready | Install Docker/Colima, kubectl, k3d, Helm, Node, jq | 15-30 min |
 | **1. Compose** | App works locally | Docker Compose with postgres, redis, backend, frontend services | 20-40 min |
 | **2. K8s Core** | App on k3d | Kubernetes deployment to humor-game namespace | 30-60 min |
-| **3. Ingress** | Prod-style access | humor-game-nginx controller with gameapp.local and gameapp.games | 20-40 min |
+| **3. Ingress** | Prod-style access | humor-game-nginx controller with kbsonlong.com and kbsonlong.com | 20-40 min |
 | **4. Observability** | See/measure | Prometheus and Grafana in monitoring namespace | 45-90 min |
 | **5. GitOps** | Automate | ArgoCD in argocd namespace for automated deployments | 30-60 min |
-| **6. Global** | Ship worldwide | Cloudflare tunnel with app.gameapp.games, prometheus.gameapp.games, grafana.gameapp.games | 60-120 min |
+| **6. Global** | Ship worldwide | Cloudflare tunnel with app.kbsonlong.com, prometheus.kbsonlong.com, grafana.kbsonlong.com | 60-120 min |
 
 ## Success Metrics
 

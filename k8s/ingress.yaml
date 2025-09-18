@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   # tls:
   # - hosts:
-  #   - gameapp.games  # Production domain with SSL
+  #   - kbsonlong.com  # Production domain with SSL
   #   secretName: gameapp-prod-tls
   rules:
-    - host: gameapp.local  # For local development (no SSL)
+    - host: kbsonlong.com  # For local development (no SSL)
       http:
         paths:
           # API routes - forward to backend
@@ -59,7 +59,7 @@ spec:
                   number: 80
     
     # Production domain
-    - host: gameapp.games  # For production (with SSL)
+    - host: kbsonlong.com  # For production (with SSL)
       http:
         paths:
           # API routes - forward to backend
@@ -102,7 +102,7 @@ spec:
                   number: 80
     
     # App subdomain
-    - host: app.gameapp.games
+    - host: app.kbsonlong.com
       http:
         paths:
           # API routes - forward to backend
@@ -174,10 +174,10 @@ spec:
   ingressClassName: nginx
   # tls:
   # - hosts:
-  #   - argocd.gameapp.games  # Production ArgoCD with SSL
+  #   - argocd.kbsonlong.com  # Production ArgoCD with SSL
   #   secretName: argocd-prod-tls
   rules:
-    - host: argocd.gameapp.local  # Local ArgoCD access (no SSL)
+    - host: argocd.kbsonlong.com  # Local ArgoCD access (no SSL)
       http:
         paths:
           - path: /
@@ -189,7 +189,7 @@ spec:
                   number: 80
     
     # Production ArgoCD access
-    - host: argocd.gameapp.games  # Production ArgoCD access (with SSL)
+    - host: argocd.kbsonlong.com  # Production ArgoCD access (with SSL)
       http:
         paths:
           - path: /

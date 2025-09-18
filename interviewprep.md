@@ -108,7 +108,7 @@
 3. **Check ingress**: `kubectl describe ingress humor-game-ingress -n humor-game`
 4. **Test internal connectivity**: `kubectl exec -it pod/backend -- curl frontend:80`
 5. **Check logs**: `kubectl logs -l app=backend -n humor-game --tail=50`
-6. **Verify external DNS**: `nslookup gameapp.games`
+6. **Verify external DNS**: `nslookup kbsonlong.com`
 
 *"I follow a systematic approach: pods → services → ingress → external connectivity. This helps isolate whether it's an application issue, networking problem, or external routing issue."*
 

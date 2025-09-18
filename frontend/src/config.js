@@ -29,12 +29,12 @@ function getApiBaseUrl() {
     // Local development - use nginx proxy
     console.log('🔧 Local development detected, returning /api');
     return '/api';
-  } else if (hostname === 'gameapp.games') {
+  } else if (hostname === 'kbsonlong.com') {
     // Production domain
     console.log('🔧 Production domain detected, returning:', `${protocol}//${hostname}:8443/api`);
     return `${protocol}//${hostname}:8443/api`;
-  } else if (hostname.includes('gameapp.games') || hostname.includes('app.gameapp.games')) {
-    // Tunnel subdomain or any gameapp.games subdomain - use relative path
+  } else if (hostname.includes('kbsonlong.com') || hostname.includes('app.kbsonlong.com')) {
+    // Tunnel subdomain or any kbsonlong.com subdomain - use relative path
     console.log('🔧 Tunnel subdomain detected, returning /api');
     return '/api';
   } else {

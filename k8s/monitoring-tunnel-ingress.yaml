@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: prometheus.gameapp.games  # Single-level subdomain (covered by Universal SSL)
+    - host: prometheus.kbsonlong.com  # Single-level subdomain (covered by Universal SSL)
       http:
         paths:
           - path: /
@@ -27,7 +27,7 @@ spec:
                 port:
                   number: 9090
     
-    - host: grafana.gameapp.games  # Single-level subdomain (covered by Universal SSL)
+    - host: grafana.kbsonlong.com  # Single-level subdomain (covered by Universal SSL)
       http:
         paths:
           - path: /
