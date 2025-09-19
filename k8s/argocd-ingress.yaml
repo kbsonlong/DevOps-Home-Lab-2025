@@ -16,13 +16,12 @@ metadata:
     nginx.ingress.kubernetes.io/forwarded-for-header: "X-Forwarded-For"
     nginx.ingress.kubernetes.io/forwarded-proto-header: "X-Forwarded-Proto"
     nginx.ingress.kubernetes.io/forwarded-host-header: "X-Forwarded-Host"
-    # ArgoCD specific server snippet for grpc and timeout handling
-    # nginx.ingress.kubernetes.io/server-snippet: |
-    #   grpc_read_timeout 300;
-    #   grpc_send_timeout 300;
-    #   client_body_timeout 60;
-    #   client_header_timeout 60;
-    #   client_max_body_size 1m;
+    # ArgoCD specific proxy settings
+    nginx.ingress.kubernetes.io/proxy-body-size: "1m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    # Proxy headers for ArgoCD
+    nginx.ingress.kubernetes.io/proxy-set-headers: "argocd-proxy-headers"
     # # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx

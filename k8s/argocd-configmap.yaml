@@ -1,0 +1,36 @@
+---
+# ArgoCD ConfigMap to enable insecure mode and prevent redirect loops
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Enable insecure mode to prevent HTTPS redirects
+  server.insecure: "true"
+  # Disable internal TLS
+  server.disable.auth: "false"
+  # Set base href for proper URL handling
+  server.basehref: "/"
+  # Additional server parameters
+  server.grpc.web: "true"
+
+---
+# ConfigMap for proxy headers to prevent redirect loops
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-proxy-headers
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-proxy-headers
+    app.kubernetes.io/part-of: argocd
+data:
+  X-Real-IP: "$remote_addr"
+  X-Forwarded-For: "$proxy_add_x_forwarded_for"
+  X-Forwarded-Proto: "$scheme"
+  X-Forwarded-Host: "$host"
+  X-Forwarded-Port: "$server_port"
