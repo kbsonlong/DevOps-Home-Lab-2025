@@ -160,6 +160,37 @@ app.get('/debug/simple-metrics', (req, res) => {
   }
 });
 
+// Header调试端点 - 测试Ingress Header透传
+app.get('/debug/headers', (req, res) => {
+  try {
+    console.log('🔍 Header debug endpoint called...');
+    console.log('Headers received:', req.headers);
+    
+    res.json({ 
+      success: true, 
+      message: 'Header debug endpoint working!',
+      timestamp: new Date().toISOString(),
+      headers: {
+        'x-forwarded-proto': req.headers['x-forwarded-proto'],
+        'x-forwarded-for': req.headers['x-forwarded-for'],
+        'x-forwarded-host': req.headers['x-forwarded-host'],
+        'x-real-ip': req.headers['x-real-ip'],
+        'host': req.headers['host'],
+        'user-agent': req.headers['user-agent'],
+        'x-scheme': req.headers['x-scheme']
+      },
+      protocol: req.protocol,
+      secure: req.secure,
+      originalUrl: req.originalUrl,
+      ip: req.ip,
+      ips: req.ips
+    });
+  } catch (error) {
+    console.error('❌ Header debug test failed:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Metrics are now handled by the Prometheus middleware
 
 // ========================================

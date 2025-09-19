@@ -1,0 +1,10 @@
+# kustomization.yaml
+resources:
+  - letsencrypt-issuer.yaml
+namespace: cert-manager
+secretGenerator:
+  - name: cloudflare-api-token-secret
+    envs:
+      - .env
+generatorOptions:
+  disableNameSuffixHash: true
