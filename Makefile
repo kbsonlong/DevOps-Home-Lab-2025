@@ -23,7 +23,7 @@ help: ## Show this help message
 
 setup-cluster: ## Create and configure k3d cluster
 	@echo "🚀 Creating kind cluster..."
-	kind create cluster --config kind-config.yaml || true
+	kind create cluster --name home-lab --config kind-config.yaml || true
 	@echo "⏳ Waiting for cluster to be ready..."
 	kubectl wait --for=condition=Ready nodes --all --timeout=60s
 	@echo "✅ Cluster ready!"
@@ -31,6 +31,7 @@ setup-cluster: ## Create and configure k3d cluster
 install-ingress: ## Install NGINX Ingress Controller
 	@echo "🌐 Installing NGINX Ingress Controller..."
 	kubectl apply -f k8s/deploy-ingress-nginx.yaml
+	kubectl wait --for=condition=Ready pods --all -n nginx-ingress --timeout=300s
 	@echo "✅ Ingress controller installed!"
 
 deploy-app: ## Deploy the main application (postgres, redis, backend, frontend)

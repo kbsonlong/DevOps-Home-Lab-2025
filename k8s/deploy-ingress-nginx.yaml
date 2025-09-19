@@ -320,7 +320,13 @@ subjects:
   namespace: ingress-nginx
 ---
 apiVersion: v1
-data: null
+data:
+  # 允许使用 server-snippet 和 configuration-snippet
+  allow-snippet-annotations: "true"
+  # 其他有用的配置
+  use-forwarded-headers: "true"
+  compute-full-forwarded-for: "true"
+  use-proxy-protocol: "false"
 kind: ConfigMap
 metadata:
   labels:
