@@ -1,0 +1,20 @@
+# Tunnel configuration
+tunnelConfig:
+  name: "home-lab"
+  logLevel: "info"
+  protocol: "auto"
+  retries: 5
+  connectTimeout: "30s"
+  gracePeriod: "30s"
+
+# Tunnel secrets (replace with your encoded values)
+tunnelSecrets:
+  base64EncodedConfigJsonFile: "eyJBY2NvdW50VGFnIjoiZDQ1OWM3OWM0ZDRkYmM4NWZiNWFiYTQ5NTZiMTdiZTQiLCJUdW5uZWxTZWNyZXQiOiJDZzJlV2xyVDFrTXVSbE12TnJobTkrUFdQaG9TZnRBcEZyd1Q4V1B1ckpJPSIsIlR1bm5lbElEIjoiNWYwNmFhYjAtN2Y2Yi00NDNiLWFjMDYtN2I4MmE3YzZhZTQxIiwiRW5kcG9pbnQiOiIifQ=="
+  base64EncodedPemFile: "LS0tLS1CRUdJTiBBUkdPIFRVTk5FTCBUT0tFTi0tLS0tCmV5SjZiMjVsU1VRaU9pSTNOemhtTVRGbE5qa3dPR1F4WkRNM1pXVmxNekEzWmpZM01XSmpaR0l5WVNJc0ltRmoKWTI5MWJuUkpSQ0k2SW1RME5UbGpOemxqTkdRMFpHSmpPRFZtWWpWaFltRTBPVFUyWWpFM1ltVTBJaXdpWVhCcApWRzlyWlc0aU9pSkhWSFJ3UmtReE9UbFhiRWRpZDJKT1prWkNRakZZZEc5VWRHbHNlVXcxTUVweE1taEpiRWxLCkluMD0KLS0tLS1FTkQgQVJHTyBUVU5ORUwgVE9LRU4tLS0tLQo="
+
+# Ingress rules
+ingress:
+  - hostname: myhome.kbsonlong.com
+    service: http://grafana.monitoring.svc.cluster.local:80
+
+  - service: http_status:404

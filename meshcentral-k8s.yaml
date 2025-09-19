@@ -1,0 +1,187 @@
+---
+# PersistentVolumeClaims for data persistence
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meshcentral-data-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard  # 适用于 k3s/k3d，其他集群可能需要调整
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meshcentral-files-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meshcentral-backups-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meshcentral-web-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+---
+# MeshCentral Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meshcentral
+  namespace: default
+  labels:
+    app: meshcentral
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meshcentral
+  template:
+    metadata:
+      labels:
+        app: meshcentral
+    spec:
+      containers:
+      - name: meshcentral
+        image: registry.cn-hangzhou.aliyuncs.com/seam/meshcentral:1.1.50
+        env:
+        - name: HOSTNAME
+          value: meshcentral.local
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        - containerPort: 4433
+          name: amt
+          protocol: TCP
+        volumeMounts:
+        - name: meshcentral-data
+          mountPath: /opt/meshcentral/meshcentral-data
+        - name: meshcentral-files
+          mountPath: /opt/meshcentral/meshcentral-files
+        - name: meshcentral-backups
+          mountPath: /opt/meshcentral/meshcentral-backups
+        - name: meshcentral-web
+          mountPath: /opt/meshcentral/meshcentral-web
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        # 健康检查
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+
+      restartPolicy: Always
+      volumes:
+      - name: meshcentral-data
+        persistentVolumeClaim:
+          claimName: meshcentral-data-pvc
+      - name: meshcentral-files
+        persistentVolumeClaim:
+          claimName: meshcentral-files-pvc
+      - name: meshcentral-backups
+        persistentVolumeClaim:
+          claimName: meshcentral-backups-pvc
+      - name: meshcentral-web
+        persistentVolumeClaim:
+          claimName: meshcentral-web-pvc
+---
+# Service for MeshCentral
+apiVersion: v1
+kind: Service
+metadata:
+  name: meshcentral-service
+  namespace: default
+  labels:
+    app: meshcentral
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  - port: 4433
+    targetPort: 4433
+    protocol: TCP
+    name: amt
+  selector:
+    app: meshcentral
+---
+# Optional: Ingress for external access (需要 Ingress Controller)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meshcentral-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx  # 根据你的 Ingress Controller 调整
+  # tls:
+  # - hosts:
+  #   - meshcentral.local  # 替换为你的域名
+  #   secretName: meshcentral-tls
+  rules:
+  - host: meshcentral.local  # 替换为你的域名
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: meshcentral-service
+            port:
+              number: 443
