@@ -6,11 +6,11 @@ metadata:
   name: argocd-ingress
   namespace: argocd
   annotations:
-    # Disable SSL redirect for tunnel access to prevent redirect loops
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    # Enable SSL redirect for production
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     # ArgoCD server configuration for UI access
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     # Handle forwarded headers properly for tunnel access
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/forwarded-for-header: "X-Forwarded-For"
@@ -22,15 +22,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
     # Proxy headers for ArgoCD
     nginx.ingress.kubernetes.io/proxy-set-headers: "argocd-proxy-headers"
-    # # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
-  # tls:
-  # - hosts:
-  #   - argocd.kbsonlong.com  # Production ArgoCD with SSL
-  #   secretName: argocd-prod-tls
+  tls:
+  - hosts:
+    - argocd.kbsonlong.com  # Production ArgoCD with SSL
+    secretName: argocd-prod-tls
   rules:
-    - host: argocd.kbsonlong.com  # Local ArgoCD access (no SSL)
+    - host: argocd.kbsonlong.com
       http:
         paths:
           - path: /
@@ -39,17 +39,5 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 80
-    
-    # Production ArgoCD access
-    - host: argocd.kbsonlong.com  # Production ArgoCD access (with SSL)
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
+                  number: 443
 

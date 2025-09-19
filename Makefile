@@ -31,8 +31,14 @@ setup-cluster: ## Create and configure k3d cluster
 install-ingress: ## Install NGINX Ingress Controller
 	@echo "🌐 Installing NGINX Ingress Controller..."
 	kubectl apply -f k8s/deploy-ingress-nginx.yaml
-	kubectl wait --for=condition=Ready pods --all -n nginx-ingress --timeout=300s
+	kubectl wait --for=condition=Ready pods  -n ingress-nginx -l app.kubernetes.io/component=controller --timeout=300s
 	@echo "✅ Ingress controller installed!"
+
+install-cert-manager:
+	@echo "🔒 Installing Cert Manager..."
+	kubectl apply -f k8s/cert-manager.yaml
+	kubectl wait --for=condition=Ready pods --all -n cert-manager --timeout=300s
+	@echo "✅ Cert Manager installed!"
 
 deploy-app: ## Deploy the main application (postgres, redis, backend, frontend)
 	@echo "🎮 Deploying main application..."
@@ -49,7 +55,10 @@ deploy-app: ## Deploy the main application (postgres, redis, backend, frontend)
 
 deploy-monitoring: ## Deploy Prometheus and Grafana monitoring stack
 	@echo "📊 Deploying monitoring stack..."
+	echo "---" >> k8s/monitoring.yaml
+	kubectl create sa -n monitoring prometheus --dry-run=client -o yaml >> k8s/monitoring.yaml
 	kubectl apply -f k8s/monitoring.yaml
+	
 	kubectl apply -f k8s/monitoring-ingress.yaml
 	@echo "⏳ Waiting for monitoring pods to be ready..."
 	kubectl wait --for=condition=Ready pods --all -n monitoring --timeout=300s
