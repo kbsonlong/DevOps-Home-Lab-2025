@@ -97,7 +97,11 @@ ingress:
       disableChunkedEncoding: true
   # macmini
   - hostname: ssh.youdomain.com
-    service: ssh://192.168.3.18:22
+    service: ssh://127.0.0.1:22
+
+  # VNC
+  - hostname: vnc.youdomain.com
+    service: vnc://127.0.0.1:5900
 
   # Catch-all for unmatched hostnames
   - service: http_status:404
@@ -120,6 +124,8 @@ cloudflared tunnel route dns home-lab app.youdomain.com
 cloudflared tunnel route dns home-lab grafana.youdomain.com
 cloudflared tunnel route dns home-lab prometheus.youdomain.com
 cloudflared tunnel route dns home-lab argocd.youdomain.com
+cloudflared tunnel route dns home-lab ssh.youdomain.com
+cloudflared tunnel route dns home-lab vnc.youdomain.com
 ```
 
 ## Method 2: Dashboard Setup (Recommended for Production)
@@ -232,12 +238,18 @@ curl -I https://argocd.youdomain.com
 ```bash
 # Test SSH connection
 cat << EOF > ~/.ssh/config
-Host ssh.kbsonlong.com
-  HostName ssh.kbsonlong.com
+Host ssh.youdomain.com
+  HostName ssh.youdomain.com
   ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
 EOF
 
-ssh -p 2222 user@ssh.kbsonlong.com
+ssh -p 2222 user@ssh.youdomain.com
+```
+
+### Test RDP Connectivity
+```bash
+# Test RDP connection
+cloudflared access rdp --hostname vnc.youdomain.com --url tcp://localhost:5900
 ```
 
 ## Troubleshooting
@@ -333,3 +345,5 @@ cloudflared tunnel delete [NAME]            # Delete tunnel
 
 *Last updated: $(date)*
 *For issues, check the troubleshooting section or refer to [Cloudflare documentation](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/)*
+
+(https://medium.com/@mohsentaleb/how-to-access-your-raspberry-pi-via-ssh-orvnc-from-anywhere-in-the-world-using-cloudflares-zero-9dcd2e75a9d7)
