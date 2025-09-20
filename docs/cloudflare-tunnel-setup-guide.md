@@ -58,7 +58,7 @@ credentials-file: ~/.cloudflared/[TUNNEL_ID].json
 
 ingress:
   # Main application
-  - hostname: app.kbsonlong.com
+  - hostname: app.youdomain.com
     service: http://172.20.10.3:8080
     originRequest:
       originServerName: kbsonlong.com
@@ -74,27 +74,30 @@ ingress:
       disableChunkedEncoding: true
 
   # Monitoring services
-  - hostname: grafana.kbsonlong.com
+  - hostname: grafana.youdomain.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: grafana.kbsonlong.com
+      originServerName: grafana.youdomain.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
-  - hostname: prometheus.kbsonlong.com
+  - hostname: prometheus.youdomain.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: prometheus.kbsonlong.com
+      originServerName: prometheus.youdomain.com
       noTLSVerify: true
       disableChunkedEncoding: true
 
   # ArgoCD
-  - hostname: argocd.kbsonlong.com
+  - hostname: argocd.youdomain.com
     service: http://172.20.10.3:8080
     originRequest:
-      originServerName: argocd.kbsonlong.com
+      originServerName: argocd.youdomain.com
       noTLSVerify: true
       disableChunkedEncoding: true
+  # macmini
+  - hostname: ssh.youdomain.com
+    service: ssh://192.168.3.18:22
 
   # Catch-all for unmatched hostnames
   - service: http_status:404
@@ -113,10 +116,10 @@ cloudflared tunnel run home-lab &
 ```bash
 # Route traffic for your domain to the tunnel
 cloudflared tunnel route dns home-lab kbsonlong.com
-cloudflared tunnel route dns home-lab app.kbsonlong.com
-cloudflared tunnel route dns home-lab grafana.kbsonlong.com
-cloudflared tunnel route dns home-lab prometheus.kbsonlong.com
-cloudflared tunnel route dns home-lab argocd.kbsonlong.com
+cloudflared tunnel route dns home-lab app.youdomain.com
+cloudflared tunnel route dns home-lab grafana.youdomain.com
+cloudflared tunnel route dns home-lab prometheus.youdomain.com
+cloudflared tunnel route dns home-lab argocd.youdomain.com
 ```
 
 ## Method 2: Dashboard Setup (Recommended for Production)
@@ -219,10 +222,22 @@ curl -H "Host: kbsonlong.com" http://172.20.10.3:8080/
 
 # Test through tunnel
 curl -I https://kbsonlong.com
-curl -I https://app.kbsonlong.com
-curl -I https://grafana.kbsonlong.com
-curl -I https://prometheus.kbsonlong.com
-curl -I https://argocd.kbsonlong.com
+curl -I https://app.youdomain.com
+curl -I https://grafana.youdomain.com
+curl -I https://prometheus.youdomain.com
+curl -I https://argocd.youdomain.com
+```
+
+### Test SSH Connectivity
+```bash
+# Test SSH connection
+cat << EOF > ~/.ssh/config
+Host ssh.kbsonlong.com
+  HostName ssh.kbsonlong.com
+  ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
+EOF
+
+ssh -p 2222 user@ssh.kbsonlong.com
 ```
 
 ## Troubleshooting
