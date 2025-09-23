@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modsecurity-custom-rules
+  namespace: ingress-nginx
+data:
+  custom-rules.conf: |
+    # 自定义 ModSecurity 规则配置
+    
+    # 基础安全规则
+    SecDefaultAction "phase:1,log,auditlog,pass"
+    SecDefaultAction "phase:2,log,auditlog,pass"
+    
+    # 防止常见攻击
+    SecRule REQUEST_HEADERS:User-Agent "@contains bot" \
+        "id:1001,\
+        phase:1,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'Bot detected',\
+        logdata:'Matched Data: %{MATCHED_VAR} found within %{MATCHED_VAR_NAME}',\
+        severity:'WARNING'"
+    
+    # SQL 注入防护增强
+    SecRule ARGS "@detectSQLi" \
+        "id:1002,\
+        phase:2,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'SQL Injection Attack Detected',\
+        logdata:'Matched Data: %{MATCHED_VAR} found within %{MATCHED_VAR_NAME}',\
+        severity:'CRITICAL'"
+    
+    # XSS 攻击防护增强
+    SecRule ARGS "@detectXSS" \
+        "id:1003,\
+        phase:2,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'XSS Attack Detected',\
+        logdata:'Matched Data: %{MATCHED_VAR} found within %{MATCHED_VAR_NAME}',\
+        severity:'CRITICAL'"
+    
+    # 文件包含攻击防护
+    SecRule ARGS "@contains ../" \
+        "id:1004,\
+        phase:2,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'Directory Traversal Attack Detected',\
+        logdata:'Matched Data: %{MATCHED_VAR} found within %{MATCHED_VAR_NAME}',\
+        severity:'WARNING'"
+    
+    # 日志配置增强
+    SecAuditLogParts ABIJDEFHZ
+    SecAuditLogFormat JSON
+    SecAuditLogRelevantStatus "^(?:5|4(?!04))"
+    
+    # 性能优化
+    SecCollectionTimeout 600
+    SecRequestBodyAccess On
+    SecRequestBodyLimit 13107200
+    SecResponseBodyAccess On
+    SecResponseBodyLimit 5242880
+    
+    # 自定义日志字段
+    SecAction "id:1005,phase:1,pass,nolog,initcol:ip=%{REMOTE_ADDR},pass,setsid:%{REMOTE_ADDR}"
+    SecRule REQUEST_URI "@streq /health" \
+        "id:1006,\
+        phase:1,\
+        pass,\
+        nolog,\
+        skipAfter:END_HEALTH_CHECK"
+    
+    SecMarker END_HEALTH_CHECK
+    
+    # 地理IP限制（需要MaxMind数据库）
+    # SecGeoLookupDb /usr/share/GeoIP/GeoIP.dat
+    # SecRule REMOTE_ADDR "@geoLookup" \
+    #     "id:1007,\
+    #     phase:1,\
+    #     deny,\
+    #     log,\
+    #     auditlog,\
+    #     chain"
+    # SecRule GEO:COUNTRY_CODE "@streq CN" \
+    #     "deny,log,auditlog,msg:'Access from restricted country'"
+    
+    # 速率限制配置
+    SecAction "id:1008,phase:1,pass,nolog,initcol:ip=%{REMOTE_ADDR}"
+    SecRule IP:request_burst_counter "@gt 100" \
+        "id:1009,\
+        phase:2,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'Rate limit exceeded',\
+        severity:'WARNING',\
+        expirevar:ip.request_burst_counter=60"
+    
+    SecRule REQUEST_URI "@streq /login" \
+        "id:1010,\
+        phase:5,\
+        pass,\
+        nolog,\
+        setvar:ip.request_burst_counter=+1"

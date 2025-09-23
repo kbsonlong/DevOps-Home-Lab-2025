@@ -327,6 +327,38 @@ data:
   use-forwarded-headers: "true"
   compute-full-forwarded-for: "true"
   use-proxy-protocol: "false"
+  # 启用 ModSecurity
+  enable-modsecurity: "true"
+  # 启用 OWASP ModSecurity CRS 规则, https://github.com/coreruleset/coreruleset
+  enable-owasp-modsecurity-crs: "true"
+  # ModSecurity 日志配置
+  modsecurity-snippet: |
+    SecRuleEngine On
+    SecAuditEngine RelevantOnly
+    SecAuditLogRelevantStatus "^(?:5|4(?!04))"
+    SecAuditLogParts ABIJDEFHZ
+    SecAuditLogType Serial
+    SecAuditLog /var/log/modsecurity/modsec_audit.log
+    SecDebugLog /var/log/modsecurity/modsec_debug.log
+    SecDebugLogLevel 3
+    SecAuditLogStorageDir /var/log/modsecurity/audit/
+    SecDataDir /tmp/
+    SecTmpDir /tmp/
+    SecUploadDir /tmp/
+    # 日志轮转配置
+    SecAuditLogFormat JSON
+    SecAuditLogDirMode 0750
+    SecAuditLogFileMode 0640
+    # 性能监控
+    SecCollectionTimeout 600
+    SecRequestBodyAccess On
+    SecRequestBodyLimit 13107200
+    SecRequestBodyNoFilesLimit 1048576
+    SecResponseBodyAccess On
+    SecResponseBodyLimit 5242880
+    SecResponseBodyMimeType text/plain text/html text/xml application/json
+    # 包含自定义规则
+    # Include /etc/nginx/modsecurity/custom-rules.conf
 kind: ConfigMap
 metadata:
   labels:
@@ -509,6 +541,13 @@ spec:
         - mountPath: /usr/local/certificates/
           name: webhook-cert
           readOnly: true
+        - mountPath: /var/log/modsecurity
+          name: modsecurity-logs
+        - mountPath: /tmp
+          name: tmp-dir
+        # - mountPath: /etc/nginx/modsecurity
+        #   name: modsecurity-rules
+        #   readOnly: true
       dnsPolicy: ClusterFirst
       nodeSelector:
         kubernetes.io/os: linux
@@ -526,6 +565,13 @@ spec:
       - name: webhook-cert
         secret:
           secretName: ingress-nginx-admission
+      - name: modsecurity-logs
+        emptyDir: {}
+      - name: tmp-dir
+        emptyDir: {}
+      # - name: modsecurity-rules
+      #   configMap:
+      #     name: modsecurity-custom-rules
 ---
 apiVersion: batch/v1
 kind: Job
