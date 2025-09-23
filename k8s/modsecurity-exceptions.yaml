@@ -1,0 +1,217 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modsecurity-exceptions
+  namespace: ingress-nginx
+data:
+  exceptions.conf: |
+    # ModSecurity 异常处理配置
+    # 针对特定应用和路径的异常处理
+    
+    # Grafana 相关异常处理
+    SecRule REQUEST_HEADERS:Host "@streq grafana.kbsonlong.com" \
+        "id:2001,\
+        phase:1,\
+        pass,\
+        nolog,\
+        ctl:ruleRemoveById=959100,\
+        ctl:ruleRemoveById=949110,\
+        ctl:ruleRemoveById=959110"
+    
+    # 对 Grafana API 端点放宽规则
+    SecRule REQUEST_URI "@beginsWith /api/" \
+        "id:2002,\
+        phase:2,\
+        pass,\
+        nolog,\
+        ctl:ruleRemoveById=942100,\
+        ctl:ruleRemoveById=942110,\
+        ctl:ruleRemoveById=942120,\
+        ctl:ruleRemoveById=942130,\
+        ctl:ruleRemoveById=942140,\
+        ctl:ruleRemoveById=942150,\
+        ctl:ruleRemoveById=942160,\
+        ctl:ruleRemoveById=942170,\
+        ctl:ruleRemoveById=942180,\
+        ctl:ruleRemoveById=942190,\
+        ctl:ruleRemoveById=942200,\
+        ctl:ruleRemoveById=942210,\
+        ctl:ruleRemoveById=942220,\
+        ctl:ruleRemoveById=942230,\
+        ctl:ruleRemoveById=942240,\
+        ctl:ruleRemoveById=942250,\
+        ctl:ruleRemoveById=942260,\
+        ctl:ruleRemoveById=942270,\
+        ctl:ruleRemoveById=942280,\
+        ctl:ruleRemoveById=942290,\
+        ctl:ruleRemoveById=942300,\
+        ctl:ruleRemoveById=942310,\
+        ctl:ruleRemoveById=942320,\
+        ctl:ruleRemoveById=942330,\
+        ctl:ruleRemoveById=942340,\
+        ctl:ruleRemoveById=942350,\
+        ctl:ruleRemoveById=942360,\
+        ctl:ruleRemoveById=942370,\
+        ctl:ruleRemoveById=942380,\
+        ctl:ruleRemoveById=942390,\
+        ctl:ruleRemoveById=942400,\
+        ctl:ruleRemoveById=942410,\
+        ctl:ruleRemoveById=942420,\
+        ctl:ruleRemoveById=942430,\
+        ctl:ruleRemoveById=942440,\
+        ctl:ruleRemoveById=942450"
+    
+    # 对静态资源完全禁用规则引擎
+    SecRule REQUEST_URI "\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$" \
+        "id:2003,\
+        phase:1,\
+        pass,\
+        nolog,\
+        ctl:ruleEngine=Off"
+    
+    # 健康检查和监控端点
+    SecRule REQUEST_URI "@rx ^/(health|ready|metrics|monitoring)" \
+        "id:2004,\
+        phase:1,\
+        pass,\
+        nolog,\
+        ctl:ruleEngine=Off"
+    
+    # 出站响应异常评分调整
+    SecRule RESPONSE_STATUS "@streq 200" \
+        "id:2005,\
+        phase:3,\
+        pass,\
+        nolog,\
+        ctl:ruleRemoveById=959100,\
+        ctl:ruleRemoveById=959110"
+    
+    # 对特定 User-Agent 放宽规则（如监控工具）
+    SecRule REQUEST_HEADERS:User-Agent "@contains Prometheus" \
+        "id:2006,\
+        phase:1,\
+        pass,\
+        nolog,\
+        ctl:ruleEngine=DetectionOnly"
+    
+    # 对内部 IP 地址放宽规则
+    SecRule REMOTE_ADDR "@ipMatch 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16" \
+        "id:2007,\
+        phase:1,\
+        pass,\
+        nolog,\
+        ctl:ruleRemoveById=910000,\
+        ctl:ruleRemoveById=913100,\
+        ctl:ruleRemoveById=913110,\
+        ctl:ruleRemoveById=913120,\
+        ctl:ruleRemoveById=920350,\
+        ctl:ruleRemoveById=920360"
+    
+    # 异常评分阈值调整
+    SecAction "id:900000,\
+        phase:1,\
+        nolog,\
+        pass,\
+        t:none,\
+        setvar:tx.anomaly_score=0,\
+        setvar:tx.inbound_anomaly_score_threshold=15,\
+        setvar:tx.outbound_anomaly_score_threshold=20,\
+        setvar:tx.paranoia_level=1,\
+        setvar:tx.executing_paranoia_level=1,\
+        setvar:tx.detection_paranoia_level=1"
+    
+    # 日志级别调整
+    SecAction "id:900001,\
+        phase:1,\
+        nolog,\
+        pass,\
+        t:none,\
+        setvar:tx.error_anomaly_score=3,\
+        setvar:tx.warning_anomaly_score=2,\
+        setvar:tx.notice_anomaly_score=1"
+    
+    # 特定规则的异常评分调整
+    SecRuleUpdateActionById 959100 "t:none,setvar:tx.outbound_anomaly_score=+2"
+    SecRuleUpdateActionById 959110 "t:none,setvar:tx.outbound_anomaly_score=+1"
+    SecRuleUpdateActionById 949110 "t:none,setvar:tx.inbound_anomaly_score=+2"
+    
+    # 日志记录配置
+    SecAuditLogRelevantStatus "^(?:5|4(?!04))"
+    SecAuditLogParts ABIJDEFHZ
+    SecAuditLogFormat JSON
+    
+    # 性能优化
+    SecCollectionTimeout 300
+    SecRequestBodyAccess On
+    SecRequestBodyLimit 13107200
+    SecResponseBodyAccess On
+    SecResponseBodyLimit 5242880
+    
+    # 自定义日志字段
+    SecAction "id:900002,\
+        phase:1,\
+        pass,\
+        nolog,\
+        initcol:ip=%{REMOTE_ADDR},\
+        setsid:%{REMOTE_ADDR},\
+        setvar:ip.blocked=0"
+    
+    # 速率限制（更宽松的配置）
+    SecAction "id:900003,\
+        phase:1,\
+        pass,\
+        nolog,\
+        initcol:ip=%{REMOTE_ADDR},\
+        setvar:ip.request_burst_counter=0,\
+        setvar:ip.request_total_counter=0"
+    
+    SecRule IP:request_burst_counter "@gt 200" \
+        "id:900004,\
+        phase:5,\
+        deny,\
+        log,\
+        auditlog,\
+        msg:'Rate limit exceeded (200 requests)',\
+        severity:'WARNING',\
+        expirevar:ip.request_burst_counter=60,\
+        setvar:ip.blocked=1"
+    
+    # 重置计数器
+    SecRule REQUEST_URI "@streq /" \
+        "id:900005,\
+        phase:5,\
+        pass,\
+        nolog,\
+        setvar:ip.request_burst_counter=+1,\
+        setvar:ip.request_total_counter=+1"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modsecurity-logging-config
+  namespace: ingress-nginx
+data:
+  logging.conf: |
+    # ModSecurity 日志配置
+    SecDebugLogLevel 3
+    SecAuditEngine RelevantOnly
+    SecAuditLogRelevantStatus "^(?:5|4(?!04))"
+    SecAuditLogParts ABIJDEFHZ
+    SecAuditLogType Serial
+    SecAuditLogFormat JSON
+    
+    # 自定义日志格式
+    SecAuditLogFormat JSON
+    SecAuditLogDirMode 0750
+    SecAuditLogFileMode 0640
+    
+    # 错误页面配置
+    SecDefaultAction "phase:1,log,auditlog,pass,status:403"
+    SecDefaultAction "phase:2,log,auditlog,pass,status:403"
+    
+    # 友好的错误页面
+    SecErrorPage "https://grafana.kbsonlong.com/error/waf-blocked"
+    
+    # 日志轮转配置
+    SecAuditLogStorageDir /var/log/modsecurity/audit/
