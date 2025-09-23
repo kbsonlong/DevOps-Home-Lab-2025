@@ -211,7 +211,7 @@ data:
     SecDefaultAction "phase:2,log,auditlog,pass,status:403"
     
     # 友好的错误页面
-    SecErrorPage "https://grafana.kbsonlong.com/error/waf-blocked"
+    # SecErrorPage "https://grafana.kbsonlong.com/error/waf-blocked"
     
     # 日志轮转配置
     SecAuditLogStorageDir /var/log/modsecurity/audit/

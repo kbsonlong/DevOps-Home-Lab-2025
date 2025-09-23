@@ -31,6 +31,7 @@ setup-cluster: ## Create and configure k3d cluster
 install-ingress: ## Install NGINX Ingress Controller
 	@echo "🌐 Installing NGINX Ingress Controller..."
 	kubectl apply -f k8s/deploy-ingress-nginx.yaml
+	kubectl apply -f k8s/modsecurity-exceptions.yaml
 	kubectl wait --for=condition=Ready pods  -n ingress-nginx -l app.kubernetes.io/component=controller --timeout=300s
 	@echo "✅ Ingress controller installed!"
 
