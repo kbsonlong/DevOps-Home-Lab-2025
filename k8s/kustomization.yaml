@@ -1,6 +1,9 @@
 # kustomization.yaml
 resources:
   - letsencrypt-issuer.yaml
+  - etcd-statefulset.yaml
+  - etcd-service.yaml
+  - etcd-configmap.yaml
 namespace: cert-manager
 secretGenerator:
   - name: cloudflare-api-token-secret

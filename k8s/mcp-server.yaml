@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mcp-server-kubernetes
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mcp-server-kubernetes
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin # 绑定 cluster-admin 角色
+subjects:
+- kind: ServiceAccount
+  name: mcp-server-kubernetes
+  namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-server-kubernetes
+  labels:
+    app: mcp-server-kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-server-kubernetes
+  template:
+    metadata:
+      labels:
+        app: mcp-server-kubernetes
+    spec:
+      containers:
+      - name: mcp-server
+        image: quay.io/manusa/kubernetes_mcp_server
+        args:
+        - --log-level=1
+        ports:
+        - containerPort: 8080
+    serviceAccountName: mcp-server-kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-server-kubernetes
+  labels:
+    app: mcp-server-kubernetes
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: mcp-server-kubernetes
