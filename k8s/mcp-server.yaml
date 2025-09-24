@@ -40,7 +40,7 @@ spec:
         - --log-level=1
         ports:
         - containerPort: 8080
-    serviceAccountName: mcp-server-kubernetes
+      serviceAccountName: mcp-server-kubernetes
 ---
 apiVersion: v1
 kind: Service

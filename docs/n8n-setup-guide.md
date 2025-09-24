@@ -19,3 +19,11 @@ kubectl apply -f kubernetes
 cd ../
 kubectl apply -f k8s/mcp-server.yaml
 ```
+
+## install ollama
+
+注意ollama 模型是否支持tools, https://ollama.com/search?c=tools
+
+## workflow
+
+import from file Demo workflow.json

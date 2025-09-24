@@ -1,0 +1,113 @@
+{
+  "name": "Demo workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1c27d495-0842-45a9-9fe5-99af2e874e94",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        0
+      ],
+      "webhookId": "cdb5c076-d458-4b9d-8398-f43bd25059b1"
+    },
+    {
+      "parameters": {
+        "model": "qwen3:4b",
+        "options": {}
+      },
+      "id": "514ec303-b4b3-4e4a-8475-ed78e02c00f2",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        264,
+        224
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "8eg8Hcpnn5uwoMHR",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "36daefbf-faab-4104-8c86-fbc0f338fa60",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://mcp-server-kubernetes.default.svc:8080/sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        224
+      ],
+      "id": "4e8ef115-5c6b-4c2b-a863-3379cd74082a",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "162f43fb-4636-435c-a07e-1d1fc485c4ce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5c5a734fb65e0cf10aeb5cde13729ff80c7ffc599fbfd83acf095f492ea08b61"
+  },
+  "id": "cHGsfqOAqgPUiP7y",
+  "tags": []
+}
