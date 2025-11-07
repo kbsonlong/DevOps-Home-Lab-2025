@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mcp-fetch-server:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MCP_SERVER_NAME=mcp-fetch-server
+      - MCP_LOG_LEVEL=INFO
+      - MCP_RATE_LIMIT=100
+      - MCP_TIMEOUT=30
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mcp-network
+
+  # 可选: Redis缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+  # 可选: 监控
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge
